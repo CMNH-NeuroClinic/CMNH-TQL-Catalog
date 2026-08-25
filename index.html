@@ -667,9 +667,9 @@ const NOTES = [
   'กรณีเลือกรับบริการและอยู่ครบตั้งแต่ 1 เดือนขึ้นไป มีรถพยาบาลรับที่โรงพยาบาล ฟรี 1 ครั้ง (เฉพาะ รพ. ในเขต อ.เมืองเชียงใหม่, รพ.สันทราย, นครพิงค์, รพ.กรุงเทพเชียงใหม่ ฯลฯ)',
   'พยาบาลวิชาชีพประจำศูนย์รับรายละเอียดอาการโดยตรงกับโรงพยาบาล เพื่อการดูแล-ฟื้นฟูที่ต่อเนื่อง'
 ];
-const LOGO_DATA_URI = 'images/logo.jpg';
+const LOGO_DATA_URI = 'logo.jpg';
 
-const HERO_BANNER_URI = 'images/hero-banner.jpg';
+const HERO_BANNER_URI = 'hero-banner.jpg';
 
 const PRIVATE_VILLA_ROOM_CHOICES = [
   { id:'vip1', name:'VIP 1', deltaDay:0, deltaMonth:0, images:[] },
@@ -687,20 +687,20 @@ const PRIVATE_ROOM_ROOM_CHOICES = [
 ];
 
 const VILLA_ROOM_CHOICES = [
-  { id:'r4', name:'ห้องรวม 4 เตียง', daycare:false, images:[ 'images/room4-a.jpg', 'images/room4-b.jpg' ] },
-  { id:'r6', name:'ห้องรวม 6 เตียง', daycare:false, images:[ 'images/room6-a.jpg', 'images/room6-b.jpg' ] },
-  { id:'r7in', name:'ห้องรวม 7 เตียง (อาคารใน)', daycare:false, images:[ 'images/room7in-a.jpg' ] },
-  { id:'r7out', name:'ห้องรวม 7 เตียง (อาคารนอก)', daycare:false, images:[ 'images/room7out-a.jpg' ] },
-  { id:'daycare5', name:'ห้องรวม 5 เตียง (Day Care)', daycare:true, images:[ 'images/daycare5-a.jpg' ] }
+  { id:'r4', name:'ห้องรวม 4 เตียง', daycare:false, images:[ 'room4-a.jpg', 'room4-b.jpg' ] },
+  { id:'r6', name:'ห้องรวม 6 เตียง', daycare:false, images:[ 'room6-a.jpg', 'room6-b.jpg' ] },
+  { id:'r7in', name:'ห้องรวม 7 เตียง (อาคารใน)', daycare:false, images:[ 'room7in-a.jpg' ] },
+  { id:'r7out', name:'ห้องรวม 7 เตียง (อาคารนอก)', daycare:false, images:[ 'room7out-a.jpg' ] },
+  { id:'daycare5', name:'ห้องรวม 5 เตียง (Day Care)', daycare:true, images:[ 'daycare5-a.jpg' ] }
 ];
 
 const ROOM_IMAGES = {
   'Private Villa': [
-    { src:'images/pv-exterior.jpg', caption:'ภายนอกบ้าน Private Villa' },
-    { src:'images/pv-living.jpg', caption:'ห้องนั่งเล่นส่วนตัว' },
-    { src:'images/pv-jacuzzi.jpg', caption:'อ่างจากุซซี่ในห้อง' },
-    { src:'images/pv-room2.jpg', caption:'ห้องนอนใหญ่' },
-    { src:'images/pv-bathroom.jpg', caption:'ห้องน้ำในตัว' }
+    { src:'pv-exterior.jpg', caption:'ภายนอกบ้าน Private Villa' },
+    { src:'pv-living.jpg', caption:'ห้องนั่งเล่นส่วนตัว' },
+    { src:'pv-jacuzzi.jpg', caption:'อ่างจากุซซี่ในห้อง' },
+    { src:'pv-room2.jpg', caption:'ห้องนอนใหญ่' },
+    { src:'pv-bathroom.jpg', caption:'ห้องน้ำในตัว' }
   ]
 };
 const PACKAGES = [
@@ -721,34 +721,34 @@ const PACKAGES = [
 /* ============================================================
    STATE
    ============================================================ */
-const CMNH_LOGO_URI = 'images/cmnh-logo.jpg';
-const CMNH_HERO_URI = 'images/cmnh/hero-cmnh.jpg';
+const CMNH_LOGO_URI = 'cmnh-logo.jpg';
+const CMNH_HERO_URI = 'hero-cmnh.jpg';
 
 const CMNH_ROOM_IMAGES = {
   'ศูนย์ดูแล NG Tube/Oxygen (สาขา 1)': [
-    { src:'images/cmnh/b1-room-a.jpg', caption:'ห้องพักผู้ป่วย NG Tube แบบ 2 เตียง มีผนังกั้น' },
-    { src:'images/cmnh/b1-room-b.jpg', caption:'ห้องพักผู้ป่วย NG Tube แบบ 3 เตียง มีผนังกั้น' },
-    { src:'images/cmnh/b1-staff.jpg', caption:'พยาบาลวิชาชีพประจำศูนย์ ดูแลใกล้ชิด' }
+    { src:'b1-room-a.jpg', caption:'ห้องพักผู้ป่วย NG Tube แบบ 2 เตียง มีผนังกั้น' },
+    { src:'b1-room-b.jpg', caption:'ห้องพักผู้ป่วย NG Tube แบบ 3 เตียง มีผนังกั้น' },
+    { src:'b1-staff.jpg', caption:'พยาบาลวิชาชีพประจำศูนย์ ดูแลใกล้ชิด' }
   ],
   'ศูนย์ดูแล NG Feed (สาขา 2)': [
-    { src:'images/cmnh/b2-hall.jpg', caption:'ทางเดินภายในศูนย์ดูแล NG Feed' },
-    { src:'images/cmnh/b2-room.jpg', caption:'ห้องพักผู้ป่วย NG Feed แบบ 2 เตียง' }
+    { src:'b2-hall.jpg', caption:'ทางเดินภายในศูนย์ดูแล NG Feed' },
+    { src:'b2-room.jpg', caption:'ห้องพักผู้ป่วย NG Feed แบบ 2 เตียง' }
   ],
   'ศูนย์กายภาพฟื้นฟู (สาขา 3)': [
-    { src:'images/cmnh/b3-gym-a.jpg', caption:'ห้องกายภาพบำบัด พร้อมอุปกรณ์ฟื้นฟู' },
-    { src:'images/cmnh/b3-gym-b.jpg', caption:'ห้องกายภาพบำบัด พร้อมราวฝึกเดิน' },
-    { src:'images/cmnh/b3-room-a.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู แบบ 1 เตียง' },
-    { src:'images/cmnh/b3-room-b.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู แบบ 1 เตียง (ผนังไม้)' },
-    { src:'images/cmnh/b3-room-c.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู พร้อมมุมนั่งเล่น' },
-    { src:'images/cmnh/b3-room-d.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู พร้อมรถเข็นอุปกรณ์' }
+    { src:'b3-gym-a.jpg', caption:'ห้องกายภาพบำบัด พร้อมอุปกรณ์ฟื้นฟู' },
+    { src:'b3-gym-b.jpg', caption:'ห้องกายภาพบำบัด พร้อมราวฝึกเดิน' },
+    { src:'b3-room-a.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู แบบ 1 เตียง' },
+    { src:'b3-room-b.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู แบบ 1 เตียง (ผนังไม้)' },
+    { src:'b3-room-c.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู พร้อมมุมนั่งเล่น' },
+    { src:'b3-room-d.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู พร้อมรถเข็นอุปกรณ์' }
   ],
   'บ้านพักผู้สูงอายุทั่วไป (สาขา 4)': [
-    { src:'images/cmnh/b4-room-2bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 2 เตียง' },
-    { src:'images/cmnh/b4-room-1bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 1 เตียง' },
-    { src:'images/cmnh/b4-room-3bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 3 เตียง' },
-    { src:'images/cmnh/b4-lawn.jpg', caption:'สนามหญ้าและระเบียงพักผ่อนหน้าบ้าน' },
-    { src:'images/cmnh/b4-living.jpg', caption:'มุมห้องนั่งเล่นส่วนกลาง' },
-    { src:'images/cmnh/b4-patio.jpg', caption:'ระเบียงนั่งเล่นด้านนอก' }
+    { src:'b4-room-2bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 2 เตียง' },
+    { src:'b4-room-1bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 1 เตียง' },
+    { src:'b4-room-3bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 3 เตียง' },
+    { src:'b4-lawn.jpg', caption:'สนามหญ้าและระเบียงพักผ่อนหน้าบ้าน' },
+    { src:'b4-living.jpg', caption:'มุมห้องนั่งเล่นส่วนกลาง' },
+    { src:'b4-patio.jpg', caption:'ระเบียงนั่งเล่นด้านนอก' }
   ]
 };
 Object.assign(ROOM_IMAGES, CMNH_ROOM_IMAGES);
