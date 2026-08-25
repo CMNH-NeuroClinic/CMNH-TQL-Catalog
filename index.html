@@ -99,8 +99,9 @@
   .cs-btn:active{transform:scale(.96);}
   .cs-btn.active{background:var(--surface); color:var(--purple-deep); box-shadow:var(--shadow-card);}
   .switch-company-link{
-    width:32px; height:32px; border-radius:10px; border:1px solid var(--line); background:var(--paper-dim);
-    display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--ink-soft); margin-left:2px; flex-shrink:0;
+    height:32px; border-radius:10px; border:1px solid var(--line); background:var(--paper-dim);
+    display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer; color:var(--ink-soft);
+    margin-left:2px; flex-shrink:0; padding:0 12px; font-size:12px; font-weight:700;
   }
   .switch-company-link:active{transform:scale(.94);}
   .topbar.topbar-hidden{display:none;}
@@ -384,6 +385,12 @@
   .hist-right{text-align:right; flex-shrink:0;}
   .hist-total{font-family:'IBM Plex Mono'; font-weight:700; color:var(--purple-deep); font-size:15px;}
   .hist-date{font-size:11px; color:var(--ink-faint); margin-top:2px;}
+  .hist-print-btn{
+    flex-shrink:0; width:36px; height:36px; border-radius:10px; border:1px solid var(--line);
+    background:var(--paper-dim); color:var(--ink-soft); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; -webkit-tap-highlight-color:transparent;
+  }
+  .hist-print-btn:active{transform:scale(.94); background:var(--purple-soft); color:var(--purple-deep);}
   .hist-search{margin-bottom:14px;}
   .hist-offline-banner{background:#FFF6E0; color:#8A6A0E; border:1px solid #F0DDA0; border-radius:12px; padding:10px 14px; font-size:12px; margin-bottom:12px; line-height:1.5;}
   .pending-tag{display:inline-block; font-size:9.5px; font-weight:700; color:var(--gold); background:#FBF1DA; padding:1px 7px; border-radius:999px; margin-left:7px; vertical-align:middle;}
@@ -400,32 +407,52 @@
   .status-pill .sdot{width:7px; height:7px; border-radius:50%; background:currentColor;}
 
   /* ---------- pdf template (offscreen) ---------- */
-  #pdfTemplate{
-    position:fixed; left:-9999px; top:0; width:794px; background:#fff; color:#241A33; font-family:'Sarabun',sans-serif;
-    padding:48px 50px;
+  #pdfTemplate{ position:fixed; left:-9999px; top:0; width:794px; }
+  .receipt-doc{ background:#fff; color:#241A33; font-family:'Sarabun',sans-serif; padding:48px 50px; width:794px; max-width:100%; box-sizing:border-box; }
+  .receipt-doc .pdf-head{display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid #6B3FA6; padding-bottom:16px; margin-bottom:22px;}
+  .receipt-doc .pdf-brand{display:flex; align-items:center; gap:12px;}
+  .receipt-doc .pdf-brand img{width:46px; height:46px; border-radius:50%; flex-shrink:0; object-fit:cover;}
+  .receipt-doc .pdf-logo{font-family:'Yellowtail',cursive; font-size:34px; color:#4B2778; line-height:1;}
+  .receipt-doc .pdf-sub{font-size:12px; color:#6C6278; margin-top:2px;}
+  .receipt-doc .pdf-doctitle{font-family:'Taviraj',serif; font-weight:600; font-size:20px; text-align:right;}
+  .receipt-doc .pdf-date{font-size:12px; color:#6C6278; text-align:right; margin-top:4px;}
+  .receipt-doc .pdf-section-title{font-family:'Taviraj',serif; font-weight:600; font-size:15px; margin:20px 0 8px; color:#4B2778;}
+  .receipt-doc table{width:100%; border-collapse:collapse; font-size:13px;}
+  .receipt-doc td{padding:7px 4px; border-bottom:1px solid #E9E2ED; vertical-align:top;}
+  .receipt-doc .lbl{color:#6C6278; width:34%;}
+  .receipt-doc .pdf-total{margin-top:14px; background:#F1E7FA; border-radius:10px; padding:14px 18px; display:flex; justify-content:space-between; align-items:center;}
+  .receipt-doc .pdf-total .tl{font-size:13px; font-weight:700; color:#4B2778;}
+  .receipt-doc .pdf-total .tv{font-family:'IBM Plex Mono',monospace; font-size:24px; font-weight:700; color:#4B2778;}
+  .receipt-doc .pdf-cols{display:flex; gap:26px; margin-top:6px;}
+  .receipt-doc .pdf-cols ul{margin:0; padding-left:16px; font-size:12px; flex:1;}
+  .receipt-doc .pdf-cols li{margin-bottom:5px;}
+  .receipt-doc .pdf-footer{margin-top:24px; font-size:10.5px; color:#8A8296; border-top:1px solid #E9E2ED; padding-top:12px;}
+  .receipt-doc .pdf-photos{display:flex; gap:14px; margin:6px 0 4px;}
+  .receipt-doc .pdf-photos .pf{flex:1;}
+  .receipt-doc .pdf-photos img{width:100%; height:150px; object-fit:cover; border-radius:8px; display:block;}
+  .receipt-doc .pdf-photos .pc{font-size:10.5px; color:#8A8296; margin-top:4px; text-align:center;}
+
+  /* ---------- receipt preview modal ---------- */
+  .receipt-modal{max-width:860px; width:96vw; padding:0; overflow:hidden; display:flex; flex-direction:column; max-height:92vh;}
+  .receipt-modal-head{display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--line); flex-shrink:0;}
+  .receipt-lang-switch{display:flex; gap:4px; background:var(--paper-dim); padding:4px; border-radius:11px;}
+  .rl-btn{border:none; background:transparent; cursor:pointer; padding:7px 14px; border-radius:8px; font-size:12.5px; font-weight:700; color:var(--ink-soft);}
+  .rl-btn.active{background:var(--surface); color:var(--purple-deep); box-shadow:var(--shadow-card);}
+  .receipt-scroll{overflow-y:auto; flex:1; background:var(--paper-dim); padding:18px; display:flex; justify-content:center;}
+  .receipt-scroll .receipt-doc{box-shadow:var(--shadow-card); border-radius:8px;}
+  .receipt-actions{display:flex; gap:10px; padding:14px 20px; border-top:1px solid var(--line); flex-shrink:0; flex-wrap:wrap;}
+  .receipt-actions .btn{flex:1; min-width:120px;}
+  @media (max-width:640px){
+    .receipt-doc{padding:28px 20px; width:100%;}
+    .receipt-doc .pdf-cols{flex-direction:column; gap:10px;}
+    .receipt-doc .pdf-photos{flex-direction:column;}
   }
-  #pdfTemplate .pdf-head{display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid #6B3FA6; padding-bottom:16px; margin-bottom:22px;}
-  #pdfTemplate .pdf-brand{display:flex; align-items:center; gap:12px;}
-  #pdfTemplate .pdf-brand img{width:46px; height:46px; border-radius:50%; flex-shrink:0;}
-  #pdfTemplate .pdf-logo{font-family:'Yellowtail',cursive; font-size:34px; color:#4B2778; line-height:1;}
-  #pdfTemplate .pdf-sub{font-size:12px; color:#6C6278; margin-top:2px;}
-  #pdfTemplate .pdf-doctitle{font-family:'Taviraj',serif; font-weight:600; font-size:20px; text-align:right;}
-  #pdfTemplate .pdf-date{font-size:12px; color:#6C6278; text-align:right; margin-top:4px;}
-  #pdfTemplate .pdf-section-title{font-family:'Taviraj',serif; font-weight:600; font-size:15px; margin:20px 0 8px; color:#4B2778;}
-  #pdfTemplate table{width:100%; border-collapse:collapse; font-size:13px;}
-  #pdfTemplate td{padding:7px 4px; border-bottom:1px solid #E9E2ED; vertical-align:top;}
-  #pdfTemplate .lbl{color:#6C6278; width:34%;}
-  #pdfTemplate .pdf-total{margin-top:14px; background:#F1E7FA; border-radius:10px; padding:14px 18px; display:flex; justify-content:space-between; align-items:center;}
-  #pdfTemplate .pdf-total .tl{font-size:13px; font-weight:700; color:#4B2778;}
-  #pdfTemplate .pdf-total .tv{font-family:'IBM Plex Mono',monospace; font-size:24px; font-weight:700; color:#4B2778;}
-  #pdfTemplate .pdf-cols{display:flex; gap:26px; margin-top:6px;}
-  #pdfTemplate .pdf-cols ul{margin:0; padding-left:16px; font-size:12px; flex:1;}
-  #pdfTemplate .pdf-cols li{margin-bottom:5px;}
-  #pdfTemplate .pdf-footer{margin-top:24px; font-size:10.5px; color:#8A8296; border-top:1px solid #E9E2ED; padding-top:12px;}
-  #pdfTemplate .pdf-photos{display:flex; gap:14px; margin:6px 0 4px;}
-  #pdfTemplate .pdf-photos .pf{flex:1;}
-  #pdfTemplate .pdf-photos img{width:100%; height:150px; object-fit:cover; border-radius:8px; display:block;}
-  #pdfTemplate .pdf-photos .pc{font-size:10.5px; color:#8A8296; margin-top:4px; text-align:center;}
+  @media print{
+    body > *:not(#printArea){display:none !important;}
+    #printArea{display:block !important; position:static !important;}
+    #printArea .receipt-doc{box-shadow:none; width:100%;}
+  }
+  #printArea{display:none;}
 
   /* ---------- hero banner ---------- */
   .hero-banner{
@@ -489,14 +516,14 @@
       <span class="brand-name" id="brandName">Tranquila</span>
       <span class="brand-sub" id="brandSub">ELDERLY CARE · แคตตาล็อกบริการ</span>
     </div>
-    <button class="switch-company-link" id="switchCompanyLink" title="เปลี่ยนบริษัท">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-3.5-7.1M21 4v6h-6"/></svg>
+    <button class="switch-company-link" id="switchCompanyLink" title="กลับหน้าแรก">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+      <span>หน้าแรก</span>
     </button>
   </div>
   <div class="tabs" id="tabsRow">
     <button class="tab-btn active" data-view="catalog">แคตตาล็อก</button>
     <button class="tab-btn" data-view="history">ประวัติการขาย</button>
-    <button class="tab-btn" data-view="settings">ตั้งค่า</button>
   </div>
 </div>
 
@@ -552,37 +579,7 @@
     <div class="empty-state" id="histEmpty" style="display:none;"></div>
   </div>
 
-  <!-- ===================== SETTINGS ===================== -->
-  <div class="view" id="view-settings">
-    <div class="section-head">
-      <div class="section-eyebrow">การเชื่อมต่อ</div>
-      <div class="section-title">ตั้งค่าระบบ</div>
-    </div>
-
-    <div class="settings-card">
-      <h3>ชื่อเจ้าหน้าที่ (ค่าเริ่มต้น)</h3>
-      <p>ใช้ร่วมกันทั้งสองบริษัท จะถูกใส่ในใบเสนอราคาโดยอัตโนมัติ แก้ไขได้ทุกครั้งตอนสร้างใบเสนอราคา</p>
-      <div class="field"><input type="text" id="staffNameInput" placeholder="เช่น พยาบาลสมหญิง"></div>
-      <button class="btn btn-secondary" id="saveStaffBtn">บันทึกชื่อเจ้าหน้าที่</button>
-    </div>
-
-    <div id="sheetSettingsContainer"></div>
-
-    <div class="settings-card">
-      <h3>วิธีตั้งค่า Google Sheet (ทำครั้งเดียวต่อบริษัท)</h3>
-      <p>ไฟล์ <code style="font-family:'IBM Plex Mono'; background:var(--paper-dim); padding:1px 6px; border-radius:6px;">Code.gs</code> ที่แนบมาให้คือโค้ดสำหรับขั้นตอนที่ 3 ด้านล่าง — ใช้ไฟล์เดียวกันได้กับทั้ง Tranquila และ CMNH แค่สร้าง Google Sheet แยกกันคนละแผ่นแล้ว deploy แยกกัน 2 รอบ</p>
-      <ol class="steps-list">
-        <li>สร้าง Google Sheet ใหม่ (ตั้งชื่อว่าอะไรก็ได้ เช่น "Tranquila Log" หรือ "CMNH Log")</li>
-        <li>เมนู <code>ส่วนขยาย (Extensions)</code> → <code>Apps Script</code></li>
-        <li>ลบโค้ดเดิมทั้งหมด แล้ววางโค้ดจากไฟล์ <code>Code.gs</code> แทน</li>
-        <li>กด <code>Deploy</code> → <code>New deployment</code> → เลือกประเภท <code>Web app</code></li>
-        <li>Execute as: <code>Me</code> · Who has access: <code>Anyone</code></li>
-        <li>กด <code>Deploy</code> แล้วคัดลอก URL มาวางในช่องของบริษัทนั้นด้านบน กด "บันทึก URL"</li>
-      </ol>
-    </div>
   </div>
-
-</div>
 
 <!-- ===================== DETAIL MODAL ===================== -->
 <div class="modal-backdrop" id="detailBackdrop">
@@ -607,7 +604,34 @@
 <div id="toastHost"></div>
 
 <!-- offscreen PDF template, filled dynamically -->
-<div id="pdfTemplate"></div>
+<div id="pdfTemplate" class="receipt-doc"></div>
+
+<!-- print-only area, filled dynamically when printing -->
+<div id="printArea"></div>
+
+<!-- receipt preview modal -->
+<div class="modal-backdrop" id="receiptBackdrop">
+  <div class="modal-sheet receipt-modal">
+    <div class="receipt-modal-head">
+      <div class="section-title" style="margin:0;">ใบเสนอราคา</div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div class="receipt-lang-switch" id="receiptLangSwitch">
+          <button class="rl-btn active" data-lang="th">ไทย</button>
+          <button class="rl-btn" data-lang="en">English</button>
+        </div>
+        <button class="icon-btn" id="closeReceipt">✕</button>
+      </div>
+    </div>
+    <div class="receipt-scroll">
+      <div class="receipt-doc" id="receiptView"></div>
+    </div>
+    <div class="receipt-actions">
+      <button class="btn btn-secondary" id="receiptDownloadBtn">บันทึกเป็น PDF</button>
+      <button class="btn btn-secondary" id="receiptPrintBtn">พิมพ์</button>
+      <button class="btn btn-primary" id="receiptShareBtn">ส่งต่อ (LINE / อีเมล)</button>
+    </div>
+  </div>
+</div>
 
 <div class="bottom-nav">
   <button class="bn-btn active" data-view="catalog">
@@ -618,10 +642,6 @@
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-7 3L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/></svg>
     ประวัติ
   </button>
-  <button class="bn-btn" data-view="settings">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-    ตั้งค่า
-  </button>
 </div>
 
 <script>
@@ -629,23 +649,27 @@
    DATA
    ============================================================ */
 const GROUPS = {
-  general: { name:'ผู้สูงอายุทั่วไป', icon:'👤', desc:'กลุ่มผู้สูงอายุทั่วไป มีโรคประจำตัว หรือมีภาวะหลงลืม รับประทานอาหารปกติ–อ่อน–กึ่งติดเตียง/เดินได้ หรือมีผู้ช่วยประคอง' },
-  rehab:   { name:'กายภาพฟื้นฟู', icon:'🏃', desc:'เน้นกายภาพฟื้นฟู หลังอุบัติเหตุ, โรคหลอดเลือดสมอง, พาร์กินสัน ฯลฯ' },
-  ngfeed:  { name:'ผู้ป่วย NG Feed', icon:'💧', desc:'รับอาหารทางสายยาง (NG Feeding) ร่วมกับกายภาพฟื้นฟู ภาวะติดเตียง–กึ่งติดเตียง มีปัญหาการกลืน' },
-  ngtube:  { name:'NG Tube / Oxygen', icon:'🫁', desc:'ให้อาหารทางสายยาง–เจาะคอ–ให้ออกซิเจน ร่วมกับกายภาพฟื้นฟู หลังผ่าตัดสมอง, โรคหลอดเลือดสมอง, พาร์กินสัน, มะเร็ง, ฟอกไต ฯลฯ' }
+  general: { name:'ผู้สูงอายุทั่วไป', nameEN:'General Elderly', icon:'👤', desc:'กลุ่มผู้สูงอายุทั่วไป มีโรคประจำตัว หรือมีภาวะหลงลืม รับประทานอาหารปกติ–อ่อน–กึ่งติดเตียง/เดินได้ หรือมีผู้ช่วยประคอง' },
+  rehab:   { name:'กายภาพฟื้นฟู', nameEN:'Physical Rehabilitation', icon:'🏃', desc:'เน้นกายภาพฟื้นฟู หลังอุบัติเหตุ, โรคหลอดเลือดสมอง, พาร์กินสัน ฯลฯ' },
+  ngfeed:  { name:'ผู้ป่วย NG Feed', nameEN:'NG Feed Patients', icon:'💧', desc:'รับอาหารทางสายยาง (NG Feeding) ร่วมกับกายภาพฟื้นฟู ภาวะติดเตียง–กึ่งติดเตียง มีปัญหาการกลืน' },
+  ngtube:  { name:'NG Tube / Oxygen', nameEN:'NG Tube / Oxygen', icon:'🫁', desc:'ให้อาหารทางสายยาง–เจาะคอ–ให้ออกซิเจน ร่วมกับกายภาพฟื้นฟู หลังผ่าตัดสมอง, โรคหลอดเลือดสมอง, พาร์กินสัน, มะเร็ง, ฟอกไต ฯลฯ' }
 };
 const ZONES = {
-  villa:   { name:'โซน Villa', desc:'บ้านเดี่ยวสไตล์วิลล่า บรรยากาศร่มรื่น', cls:'zone-villa' },
-  private: { name:'โซน Private', desc:'อาคารส่วนตัว เป็นสัดส่วน', cls:'zone-private' }
+  villa:   { name:'โซน Villa', nameEN:'Villa Zone', desc:'บ้านเดี่ยวสไตล์วิลล่า บรรยากาศร่มรื่น', cls:'zone-villa' },
+  private: { name:'โซน Private', nameEN:'Private Zone', desc:'อาคารส่วนตัว เป็นสัดส่วน', cls:'zone-private' }
 };
 const SERVICES = {
   standard:{
     left:['แพทย์เฉพาะทางลงตรวจทุก 2 สัปดาห์','พยาบาลวิชาชีพประจำศูนย์','เจ้าหน้าที่ดูแลตลอด 24 ชม.','อาหาร + ผลไม้ + ของว่าง = 3 มื้อ/วัน','เช้า: กายภาพขั้นพื้นฐานด้วยกายอุปกรณ์','บ่าย: กิจกรรมบำบัด อาทิ ทำขนม, ฝึกกล้ามเนื้อมัดเล็ก','กิจกรรมกลุ่ม และสวดมนต์ก่อนนอน'],
-    right:['ทำความสะอาดชุด (ส่งซักอบโอโซนฆ่าเชื้อ)','นวดน้ำมันอโรม่า ทุกวันพุธ','แช่เท้าน้ำอุ่น ทุกวันเสาร์','ประคบสมุนไพร ทุกวันอาทิตย์','ตัดเล็บ/ตัดผม/โกนหนวด ทุกวันอาทิตย์','ใส่บาตรทุกวันพระ','กิจกรรมพิเศษวันสำคัญประจำปี']
+    right:['ทำความสะอาดชุด (ส่งซักอบโอโซนฆ่าเชื้อ)','นวดน้ำมันอโรม่า ทุกวันพุธ','แช่เท้าน้ำอุ่น ทุกวันเสาร์','ประคบสมุนไพร ทุกวันอาทิตย์','ตัดเล็บ/ตัดผม/โกนหนวด ทุกวันอาทิตย์','ใส่บาตรทุกวันพระ','กิจกรรมพิเศษวันสำคัญประจำปี'],
+    leftEN:['Specialist doctor visits every 2 weeks','Full-time professional nurse on site','24-hour caregiver on duty','Meals + fruit + snacks = 3 meals/day','Morning: basic physiotherapy with equipment','Afternoon: activity therapy e.g. baking, fine motor exercises','Group activities and evening prayers'],
+    rightEN:['Laundry service (ozone-sanitized wash)','Aroma oil massage every Wednesday','Warm foot soak every Saturday','Herbal compress every Sunday','Nail/hair/shave grooming every Sunday','Alms-giving on Buddhist holy days','Special activities on annual holidays']
   },
   critical:{
     left:['แพทย์เฉพาะทางลงตรวจทุก 2 สัปดาห์','พยาบาลวิชาชีพประจำศูนย์','เจ้าหน้าที่ดูแลตลอด 24 ชม. (เปลี่ยนเวรทุก 8 ชม.)','อาหารเหลวปั่นสดโดยนักโภชนาการ = 5 มื้อ/วัน','กายภาพบำบัด, นวดกระตุ้นใบหน้า, นวดกระเพาะปัสสาวะ','กิจกรรมบำบัด เน้นฝึกกล้ามเนื้อมัดเล็กและการทรงตัว','ขึ้นเครื่องปรับองศาเพื่อฝึกยืน, Space Walker ฯลฯ'],
-    right:['การฝึกเดินขึ้นทางลาด, การขึ้น-ลงบันได','ทำความสะอาดชุด (ส่งซักอบโอโซนฆ่าเชื้อ)','นวดน้ำมันอโรม่า ทุกวันพุธ','แช่เท้าน้ำอุ่น ทุกวันเสาร์','ประคบสมุนไพร ทุกวันอาทิตย์','ตัดเล็บ/ตัดผม/โกนหนวด ทุกวันอาทิตย์','ใส่บาตรทุกวันพระ / กิจกรรมพิเศษประจำปี']
+    right:['การฝึกเดินขึ้นทางลาด, การขึ้น-ลงบันได','ทำความสะอาดชุด (ส่งซักอบโอโซนฆ่าเชื้อ)','นวดน้ำมันอโรม่า ทุกวันพุธ','แช่เท้าน้ำอุ่น ทุกวันเสาร์','ประคบสมุนไพร ทุกวันอาทิตย์','ตัดเล็บ/ตัดผม/โกนหนวด ทุกวันอาทิตย์','ใส่บาตรทุกวันพระ / กิจกรรมพิเศษประจำปี'],
+    leftEN:['Specialist doctor visits every 2 weeks','Full-time professional nurse on site','24-hour caregiver on duty (8-hour shift rotation)','Freshly blended liquid meals by a nutritionist = 5 meals/day','Physiotherapy, facial stimulation massage, bladder massage','Activity therapy focused on fine motor skills and balance','Tilt-table standing training, Space Walker, etc.'],
+    rightEN:['Ramp walking and stair up/down training','Laundry service (ozone-sanitized wash)','Aroma oil massage every Wednesday','Warm foot soak every Saturday','Herbal compress every Sunday','Nail/hair/shave grooming every Sunday','Alms-giving / special activities on annual holidays']
   }
 };
 const EXCLUDED = [
@@ -662,60 +686,99 @@ const EXCLUDED = [
   'ของใช้ส่วนตัว (ครีมอาบน้ำ, แชมพู, โลชั่น ฯลฯ) ราคาปกติไม่บวกเพิ่ม',
   'แถบตรวจน้ำตาลปลายนิ้ว 50 บาท/ครั้ง · สายดูดเสมหะ 7 บาท/เส้น'
 ];
+const EXCLUDED_EN = [
+  'Ambulance for doctor appointments + staff, 1,500 THB/trip (round trip)',
+  'Emergency ambulance, 1,700 THB/trip (with staff and equipment)',
+  'Staff fee for accompanying doctor visits or picking up medication, 600 THB/trip',
+  'Certainty-brand diapers (M, L), 400 THB/pack · Pads, 120 THB/pack',
+  'Professional physiotherapist, 700 THB/session (1:1)',
+  'Occupational therapist, 700 THB/session (1:1)',
+  'Acupuncture body-balancing by a specialist doctor, 450 THB/session',
+  'Oxygen (electric) 120 THB/day · Oxygen (green tank 6 cu.) 500 THB/tank',
+  'Pressure sore wound care, starting from 70 THB/session',
+  'Urinary catheter change, 400 THB/set · NG feed tube change, 150 THB/set',
+  'Personal care items (body wash, shampoo, lotion, etc.) at normal price, no markup',
+  'Fingertip blood sugar test strip, 50 THB/test · Suction catheter, 7 THB/piece'
+];
 const ESCORT_NOTE = 'กรณีต้องมีเจ้าหน้าที่ดูแลประกบตลอด 24 ชม. (เวรเช้า 1 / เวรดึก 1) = 39,000 บาท/เดือน';
+const ESCORT_NOTE_EN = 'For a dedicated 24-hour caregiver (1 day shift / 1 night shift) = 39,000 THB/month';
 const NOTES = [
   'กรณีเลือกรับบริการและอยู่ครบตั้งแต่ 1 เดือนขึ้นไป มีรถพยาบาลรับที่โรงพยาบาล ฟรี 1 ครั้ง (เฉพาะ รพ. ในเขต อ.เมืองเชียงใหม่, รพ.สันทราย, นครพิงค์, รพ.กรุงเทพเชียงใหม่ ฯลฯ)',
   'พยาบาลวิชาชีพประจำศูนย์รับรายละเอียดอาการโดยตรงกับโรงพยาบาล เพื่อการดูแล-ฟื้นฟูที่ต่อเนื่อง'
 ];
+const NOTES_EN = [
+  'For stays of 1 month or more, one free ambulance pickup from the hospital is included (hospitals within Mueang Chiang Mai, Sansai, Nakornping, Bangkok Hospital Chiang Mai, etc. only)',
+  'Our on-site professional nurse coordinates directly with the hospital for continuous care and rehabilitation'
+];
+const LABELS = {
+  th: {
+    docTitle:'ใบเสนอราคาค่าบริการ', customer:'ลูกค้า', contact:'ติดต่อ', staff:'เจ้าหน้าที่ผู้เสนอ',
+    group:'กลุ่มผู้รับบริการ', zoneRoom:'โซน / ห้องพัก', rate:'อัตราค่าบริการ', plan:'รูปแบบที่เลือก',
+    notes:'หมายเหตุ', total:'ยอดรวมค่าบริการโดยประมาณ', perDay:'/ วัน', perMonth:'/ เดือน', or:'หรือ',
+    servicesTitle:'บริการที่ได้รับ', exclTitle:'ค่าใช้จ่ายอื่น ๆ ที่ไม่รวมในค่าบริการ (ญาติสามารถนำมาเองได้)',
+    photosTitle:'ภาพห้องพัก', escortIncl:'รวมเจ้าหน้าที่ประกบ 24 ชม.',
+    footer:'ใบเสนอราคานี้เป็นการประมาณการเบื้องต้น ราคาอาจเปลี่ยนแปลงตามการประเมินอาการจริงหน้างาน · จัดทำโดย',
+    durationDay:'รายวัน', durationMonth:'รายเดือน', durationDaycare:'Day Care 12 ชม.', times:'×'
+  },
+  en: {
+    docTitle:'Service Quotation', customer:'Customer', contact:'Contact', staff:'Prepared By',
+    group:'Patient Group', zoneRoom:'Zone / Room', rate:'Service Rate', plan:'Selected Plan',
+    notes:'Notes', total:'Estimated Total', perDay:'/ day', perMonth:'/ month', or:'or',
+    servicesTitle:'Included Services', exclTitle:'Additional Costs Not Included (family may bring their own)',
+    photosTitle:'Room Photos', escortIncl:'Incl. 24-hr dedicated caregiver',
+    footer:'This quotation is a preliminary estimate. Prices may vary based on an on-site assessment · Prepared by',
+    durationDay:'Daily', durationMonth:'Monthly', durationDaycare:'Day Care (12 hrs)', times:'×'
+  }
+};
 const LOGO_DATA_URI = 'logo.jpg';
 
 const HERO_BANNER_URI = 'hero-banner.jpg';
 
 const PRIVATE_VILLA_ROOM_CHOICES = [
-  { id:'vip1', name:'VIP 1', deltaDay:0, deltaMonth:0, images:[] },
-  { id:'vip2', name:'VIP 2', deltaDay:0, deltaMonth:0, images:[] },
-  { id:'vip3', name:'VIP 3', deltaDay:0, deltaMonth:0, images:[] },
-  { id:'vip4', name:'VIP 4', deltaDay:0, deltaMonth:0, images:[] },
-  { id:'vip5', name:'VIP 5', deltaDay:0, deltaMonth:0, images:[] },
-  { id:'vip6', name:'VIP 6', deltaDay:0, deltaMonth:0, images:[] }
+  { id:'vip1', name:'VIP 1', nameEN:'VIP 1', deltaDay:0, deltaMonth:0, images:[] },
+  { id:'vip2', name:'VIP 2', nameEN:'VIP 2', deltaDay:0, deltaMonth:0, images:[] },
+  { id:'vip3', name:'VIP 3', nameEN:'VIP 3', deltaDay:0, deltaMonth:0, images:[] },
+  { id:'vip4', name:'VIP 4', nameEN:'VIP 4', deltaDay:0, deltaMonth:0, images:[] },
+  { id:'vip5', name:'VIP 5', nameEN:'VIP 5', deltaDay:0, deltaMonth:0, images:[] },
+  { id:'vip6', name:'VIP 6', nameEN:'VIP 6', deltaDay:0, deltaMonth:0, images:[] }
 ];
 const PRIVATE_ROOM_ROOM_CHOICES = [
-  { id:'vip7',  name:'VIP 7',  deltaDay:0,    deltaMonth:0,    images:[] },
-  { id:'vip8',  name:'VIP 8',  deltaDay:0,    deltaMonth:0,    images:[] },
-  { id:'vip9',  name:'VIP 9',  deltaDay:300,  deltaMonth:5000, images:[] },
-  { id:'vip10', name:'VIP 10', deltaDay:300,  deltaMonth:5000, images:[] }
+  { id:'vip7',  name:'VIP 7',  nameEN:'VIP 7',  deltaDay:0,    deltaMonth:0,    images:[] },
+  { id:'vip8',  name:'VIP 8',  nameEN:'VIP 8',  deltaDay:0,    deltaMonth:0,    images:[] },
+  { id:'vip9',  name:'VIP 9',  nameEN:'VIP 9',  deltaDay:300,  deltaMonth:5000, images:[] },
+  { id:'vip10', name:'VIP 10', nameEN:'VIP 10', deltaDay:300,  deltaMonth:5000, images:[] }
 ];
 
 const VILLA_ROOM_CHOICES = [
-  { id:'r4', name:'ห้องรวม 4 เตียง', daycare:false, images:[ 'room4-a.jpg', 'room4-b.jpg' ] },
-  { id:'r6', name:'ห้องรวม 6 เตียง', daycare:false, images:[ 'room6-a.jpg', 'room6-b.jpg' ] },
-  { id:'r7in', name:'ห้องรวม 7 เตียง (อาคารใน)', daycare:false, images:[ 'room7in-a.jpg' ] },
-  { id:'r7out', name:'ห้องรวม 7 เตียง (อาคารนอก)', daycare:false, images:[ 'room7out-a.jpg' ] },
-  { id:'daycare5', name:'ห้องรวม 5 เตียง (Day Care)', daycare:true, images:[ 'daycare5-a.jpg' ] }
+  { id:'r4', name:'ห้องรวม 4 เตียง', nameEN:'Shared Room, 4 Beds', daycare:false, images:[ 'room4-a.jpg', 'room4-b.jpg' ] },
+  { id:'r6', name:'ห้องรวม 6 เตียง', nameEN:'Shared Room, 6 Beds', daycare:false, images:[ 'room6-a.jpg', 'room6-b.jpg' ] },
+  { id:'r7in', name:'ห้องรวม 7 เตียง (อาคารใน)', nameEN:'Shared Room, 7 Beds (Inner Building)', daycare:false, images:[ 'room7in-a.jpg' ] },
+  { id:'r7out', name:'ห้องรวม 7 เตียง (อาคารนอก)', nameEN:'Shared Room, 7 Beds (Outer Building)', daycare:false, images:[ 'room7out-a.jpg' ] },
+  { id:'daycare5', name:'ห้องรวม 5 เตียง (Day Care)', nameEN:'Shared Room, 5 Beds (Day Care)', daycare:true, images:[ 'daycare5-a.jpg' ] }
 ];
 
 const ROOM_IMAGES = {
   'Private Villa': [
-    { src:'pv-exterior.jpg', caption:'ภายนอกบ้าน Private Villa' },
-    { src:'pv-living.jpg', caption:'ห้องนั่งเล่นส่วนตัว' },
-    { src:'pv-jacuzzi.jpg', caption:'อ่างจากุซซี่ในห้อง' },
-    { src:'pv-room2.jpg', caption:'ห้องนอนใหญ่' },
-    { src:'pv-bathroom.jpg', caption:'ห้องน้ำในตัว' }
+    { src:'pv-exterior.jpg', caption:'ภายนอกบ้าน Private Villa', captionEN:'Exterior of the Private Villa' },
+    { src:'pv-living.jpg', caption:'ห้องนั่งเล่นส่วนตัว', captionEN:'Private living room' },
+    { src:'pv-jacuzzi.jpg', caption:'อ่างจากุซซี่ในห้อง', captionEN:'In-room jacuzzi tub' },
+    { src:'pv-room2.jpg', caption:'ห้องนอนใหญ่', captionEN:'Master bedroom' },
+    { src:'pv-bathroom.jpg', caption:'ห้องน้ำในตัว', captionEN:'En-suite bathroom' }
   ]
 };
 const PACKAGES = [
-  { id:'v-general',    zone:'villa',    group:'general', room:'บ้าน Villa โซนรวม', priceDay:1200, priceMonth:35000, escort:false, svc:'standard', roomChoices:VILLA_ROOM_CHOICES },
-  { id:'v-rehab',      zone:'villa',    group:'rehab',   room:'บ้าน Villa โซนรวม', priceDay:1200, priceMonth:35000, escort:false, svc:'standard', roomChoices:VILLA_ROOM_CHOICES },
-  { id:'v-ngfeed',     zone:'villa',    group:'ngfeed',  room:'บ้าน Villa โซนรวม', priceDay:1500, priceMonth:42000, escort:false, svc:'critical', roomChoices:VILLA_ROOM_CHOICES },
-  { id:'v-ngtube',     zone:'villa',    group:'ngtube',  room:'บ้าน Villa โซนรวม', priceDay:1700, priceMonth:45000, escort:false, svc:'critical', roomChoices:VILLA_ROOM_CHOICES },
-  { id:'v-general-pv', zone:'villa',    group:'general', room:'Private Villa',     priceDay:1800, priceMonth:52000, escort:true,  svc:'standard', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
-  { id:'v-rehab-pv',   zone:'villa',    group:'rehab',   room:'Private Villa',     priceDay:1800, priceMonth:52000, escort:true,  svc:'standard', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
-  { id:'v-ngfeed-pv',  zone:'villa',    group:'ngfeed',  room:'Private Villa',     priceDay:2200, priceMonth:62000, escort:true,  svc:'critical', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
-  { id:'v-ngtube-pv',  zone:'villa',    group:'ngtube',  room:'Private Villa',     priceDay:2500, priceMonth:67000, escort:true,  svc:'critical', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
-  { id:'p-general-pr', zone:'private',  group:'general', room:'Private Room',      priceDay:1600, priceMonth:45000, escort:true,  svc:'standard', roomChoices:PRIVATE_ROOM_ROOM_CHOICES },
-  { id:'p-rehab-pr',   zone:'private',  group:'rehab',   room:'Private Room',      priceDay:1600, priceMonth:45000, escort:true,  svc:'standard', roomChoices:PRIVATE_ROOM_ROOM_CHOICES },
-  { id:'p-ngfeed-pv',  zone:'private',  group:'ngfeed',  room:'Private Villa',     priceDay:1900, priceMonth:53000, escort:true,  svc:'critical' },
-  { id:'p-ngtube-pr',  zone:'private',  group:'ngtube',  room:'Private Room',      priceDay:2200, priceMonth:58000, escort:true,  svc:'critical', roomChoices:PRIVATE_ROOM_ROOM_CHOICES }
+  { id:'v-general',    zone:'villa',    group:'general', room:'บ้าน Villa โซนรวม', roomEN:'Villa House – Shared Zone', priceDay:1200, priceMonth:35000, escort:false, svc:'standard', roomChoices:VILLA_ROOM_CHOICES },
+  { id:'v-rehab',      zone:'villa',    group:'rehab',   room:'บ้าน Villa โซนรวม', roomEN:'Villa House – Shared Zone', priceDay:1200, priceMonth:35000, escort:false, svc:'standard', roomChoices:VILLA_ROOM_CHOICES },
+  { id:'v-ngfeed',     zone:'villa',    group:'ngfeed',  room:'บ้าน Villa โซนรวม', roomEN:'Villa House – Shared Zone', priceDay:1500, priceMonth:42000, escort:false, svc:'critical', roomChoices:VILLA_ROOM_CHOICES },
+  { id:'v-ngtube',     zone:'villa',    group:'ngtube',  room:'บ้าน Villa โซนรวม', roomEN:'Villa House – Shared Zone', priceDay:1700, priceMonth:45000, escort:false, svc:'critical', roomChoices:VILLA_ROOM_CHOICES },
+  { id:'v-general-pv', zone:'villa',    group:'general', room:'Private Villa',     roomEN:'Private Villa', priceDay:1800, priceMonth:52000, escort:true,  svc:'standard', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
+  { id:'v-rehab-pv',   zone:'villa',    group:'rehab',   room:'Private Villa',     roomEN:'Private Villa', priceDay:1800, priceMonth:52000, escort:true,  svc:'standard', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
+  { id:'v-ngfeed-pv',  zone:'villa',    group:'ngfeed',  room:'Private Villa',     roomEN:'Private Villa', priceDay:2200, priceMonth:62000, escort:true,  svc:'critical', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
+  { id:'v-ngtube-pv',  zone:'villa',    group:'ngtube',  room:'Private Villa',     roomEN:'Private Villa', priceDay:2500, priceMonth:67000, escort:true,  svc:'critical', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
+  { id:'p-general-pr', zone:'private',  group:'general', room:'Private Room',      roomEN:'Private Room', priceDay:1600, priceMonth:45000, escort:true,  svc:'standard', roomChoices:PRIVATE_ROOM_ROOM_CHOICES },
+  { id:'p-rehab-pr',   zone:'private',  group:'rehab',   room:'Private Room',      roomEN:'Private Room', priceDay:1600, priceMonth:45000, escort:true,  svc:'standard', roomChoices:PRIVATE_ROOM_ROOM_CHOICES },
+  { id:'p-ngfeed-pv',  zone:'private',  group:'ngfeed',  room:'Private Villa',     roomEN:'Private Villa', priceDay:1900, priceMonth:53000, escort:true,  svc:'critical' },
+  { id:'p-ngtube-pr',  zone:'private',  group:'ngtube',  room:'Private Room',      roomEN:'Private Room', priceDay:2200, priceMonth:58000, escort:true,  svc:'critical', roomChoices:PRIVATE_ROOM_ROOM_CHOICES }
 ];
 
 /* ============================================================
@@ -726,58 +789,60 @@ const CMNH_HERO_URI = 'hero-cmnh.jpg';
 
 const CMNH_ROOM_IMAGES = {
   'ศูนย์ดูแล NG Tube/Oxygen (สาขา 1)': [
-    { src:'b1-room-a.jpg', caption:'ห้องพักผู้ป่วย NG Tube แบบ 2 เตียง มีผนังกั้น' },
-    { src:'b1-room-b.jpg', caption:'ห้องพักผู้ป่วย NG Tube แบบ 3 เตียง มีผนังกั้น' },
-    { src:'b1-staff.jpg', caption:'พยาบาลวิชาชีพประจำศูนย์ ดูแลใกล้ชิด' }
+    { src:'b1-room-a.jpg', caption:'ห้องพักผู้ป่วย NG Tube แบบ 2 เตียง มีผนังกั้น', captionEN:'NG Tube patient room, 2 beds with partition' },
+    { src:'b1-room-b.jpg', caption:'ห้องพักผู้ป่วย NG Tube แบบ 3 เตียง มีผนังกั้น', captionEN:'NG Tube patient room, 3 beds with partition' },
+    { src:'b1-staff.jpg', caption:'พยาบาลวิชาชีพประจำศูนย์ ดูแลใกล้ชิด', captionEN:'On-site professional nurse providing close care' }
   ],
   'ศูนย์ดูแล NG Feed (สาขา 2)': [
-    { src:'b2-hall.jpg', caption:'ทางเดินภายในศูนย์ดูแล NG Feed' },
-    { src:'b2-room.jpg', caption:'ห้องพักผู้ป่วย NG Feed แบบ 2 เตียง' }
+    { src:'b2-hall.jpg', caption:'ทางเดินภายในศูนย์ดูแล NG Feed', captionEN:'Hallway inside the NG Feed care center' },
+    { src:'b2-room.jpg', caption:'ห้องพักผู้ป่วย NG Feed แบบ 2 เตียง', captionEN:'NG Feed patient room, 2 beds' }
   ],
   'ศูนย์กายภาพฟื้นฟู (สาขา 3)': [
-    { src:'b3-gym-a.jpg', caption:'ห้องกายภาพบำบัด พร้อมอุปกรณ์ฟื้นฟู' },
-    { src:'b3-gym-b.jpg', caption:'ห้องกายภาพบำบัด พร้อมราวฝึกเดิน' },
-    { src:'b3-room-a.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู แบบ 1 เตียง' },
-    { src:'b3-room-b.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู แบบ 1 เตียง (ผนังไม้)' },
-    { src:'b3-room-c.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู พร้อมมุมนั่งเล่น' },
-    { src:'b3-room-d.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู พร้อมรถเข็นอุปกรณ์' }
+    { src:'b3-gym-a.jpg', caption:'ห้องกายภาพบำบัด พร้อมอุปกรณ์ฟื้นฟู', captionEN:'Physiotherapy room with rehabilitation equipment' },
+    { src:'b3-gym-b.jpg', caption:'ห้องกายภาพบำบัด พร้อมราวฝึกเดิน', captionEN:'Physiotherapy room with walking training rail' },
+    { src:'b3-room-a.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู แบบ 1 เตียง', captionEN:'Rehab patient room, 1 bed' },
+    { src:'b3-room-b.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู แบบ 1 เตียง (ผนังไม้)', captionEN:'Rehab patient room, 1 bed (wood-paneled)' },
+    { src:'b3-room-c.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู พร้อมมุมนั่งเล่น', captionEN:'Rehab patient room with a sitting area' },
+    { src:'b3-room-d.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู พร้อมรถเข็นอุปกรณ์', captionEN:'Rehab patient room with equipment cart' }
   ],
   'บ้านพักผู้สูงอายุทั่วไป (สาขา 4)': [
-    { src:'b4-room-2bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 2 เตียง' },
-    { src:'b4-room-1bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 1 เตียง' },
-    { src:'b4-room-3bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 3 เตียง' },
-    { src:'b4-lawn.jpg', caption:'สนามหญ้าและระเบียงพักผ่อนหน้าบ้าน' },
-    { src:'b4-living.jpg', caption:'มุมห้องนั่งเล่นส่วนกลาง' },
-    { src:'b4-patio.jpg', caption:'ระเบียงนั่งเล่นด้านนอก' }
+    { src:'b4-room-2bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 2 เตียง', captionEN:'Elderly care room, 2 beds' },
+    { src:'b4-room-1bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 1 เตียง', captionEN:'Elderly care room, 1 bed' },
+    { src:'b4-room-3bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 3 เตียง', captionEN:'Elderly care room, 3 beds' },
+    { src:'b4-lawn.jpg', caption:'สนามหญ้าและระเบียงพักผ่อนหน้าบ้าน', captionEN:'Front lawn and relaxation terrace' },
+    { src:'b4-living.jpg', caption:'มุมห้องนั่งเล่นส่วนกลาง', captionEN:'Communal living room corner' },
+    { src:'b4-patio.jpg', caption:'ระเบียงนั่งเล่นด้านนอก', captionEN:'Outdoor sitting patio' }
   ]
 };
 Object.assign(ROOM_IMAGES, CMNH_ROOM_IMAGES);
 
 const CMNH_ZONES = {
-  main: { name:'CMNH', desc:'เชียงใหม่เนิร์สซิ่งโฮมแคร์', cls:'zone-cmnh' }
+  main: { name:'CMNH', nameEN:'CMNH', desc:'เชียงใหม่เนิร์สซิ่งโฮมแคร์', cls:'zone-cmnh' }
 };
 const CMNH_ROOM_CHOICES = [
-  { id:'zone',           name:'ห้องรวม (โซนรวม)',     deltaDay:0,   deltaMonth:0,    images:[] },
-  { id:'special-double', name:'ห้องพิเศษ (คู่)',       deltaDay:200, deltaMonth:2500, images:[] },
-  { id:'special-single', name:'ห้องพิเศษ (เดี่ยว)',    deltaDay:200, deltaMonth:5000, images:[] }
+  { id:'zone',           name:'ห้องรวม (โซนรวม)',     nameEN:'Shared Room',        deltaDay:0,   deltaMonth:0,    images:[] },
+  { id:'special-double', name:'ห้องพิเศษ (คู่)',       nameEN:'Special Room (Twin)', deltaDay:200, deltaMonth:2500, images:[] },
+  { id:'special-single', name:'ห้องพิเศษ (เดี่ยว)',    nameEN:'Special Room (Single)', deltaDay:200, deltaMonth:5000, images:[] }
 ];
 const CMNH_PACKAGES = [
-  { id:'c-general', zone:'main', group:'general', room:'บ้านพักผู้สูงอายุทั่วไป (สาขา 4)', priceDay:1000, priceMonth:25000, escort:false, svc:'standard', roomChoices:CMNH_ROOM_CHOICES },
-  { id:'c-rehab',   zone:'main', group:'rehab',   room:'ศูนย์กายภาพฟื้นฟู (สาขา 3)', priceDay:1000, priceMonth:25000, escort:false, svc:'standard', roomChoices:CMNH_ROOM_CHOICES },
-  { id:'c-ngfeed',  zone:'main', group:'ngfeed',  room:'ศูนย์ดูแล NG Feed (สาขา 2)', priceDay:1200, priceMonth:30000, escort:false, svc:'critical', roomChoices:CMNH_ROOM_CHOICES },
-  { id:'c-ngtube',  zone:'main', group:'ngtube',  room:'ศูนย์ดูแล NG Tube/Oxygen (สาขา 1)', priceDay:1800, priceMonth:35000, escort:false, svc:'critical', roomChoices:CMNH_ROOM_CHOICES }
+  { id:'c-general', zone:'main', group:'general', room:'บ้านพักผู้สูงอายุทั่วไป (สาขา 4)', roomEN:'General Elderly Home (Branch 4)', priceDay:1000, priceMonth:25000, escort:false, svc:'standard', roomChoices:CMNH_ROOM_CHOICES },
+  { id:'c-rehab',   zone:'main', group:'rehab',   room:'ศูนย์กายภาพฟื้นฟู (สาขา 3)', roomEN:'Physical Rehabilitation Center (Branch 3)', priceDay:1000, priceMonth:25000, escort:false, svc:'standard', roomChoices:CMNH_ROOM_CHOICES },
+  { id:'c-ngfeed',  zone:'main', group:'ngfeed',  room:'ศูนย์ดูแล NG Feed (สาขา 2)', roomEN:'NG Feed Care Center (Branch 2)', priceDay:1200, priceMonth:30000, escort:false, svc:'critical', roomChoices:CMNH_ROOM_CHOICES },
+  { id:'c-ngtube',  zone:'main', group:'ngtube',  room:'ศูนย์ดูแล NG Tube/Oxygen (สาขา 1)', roomEN:'NG Tube/Oxygen Care Center (Branch 1)', priceDay:1800, priceMonth:35000, escort:false, svc:'critical', roomChoices:CMNH_ROOM_CHOICES }
 ];
 
 const COMPANIES = {
   tranquila: {
     key:'tranquila', name:'Tranquila', fullName:'Tranquila Elderly Care',
     tagline:'กายภาพ–ฟื้นฟู–ดูแล ด้านระบบประสาทและสมอง',
+    taglineEN:'Physiotherapy – Rehabilitation – Neurological & Brain Care',
     logo: LOGO_DATA_URI, heroType:'photo', heroSrc: HERO_BANNER_URI,
     zones: ZONES, packages: PACKAGES, hasZones: true
   },
   cmnh: {
     key:'cmnh', name:'CMNH', fullName:'Chiangmai Nursing Homecare',
     tagline:'กายภาพ–ฟื้นฟู–ดูแล ด้านระบบประสาทและสมอง',
+    taglineEN:'Physiotherapy – Rehabilitation – Neurological & Brain Care',
     logo: CMNH_LOGO_URI, heroType:'photo', heroSrc: CMNH_HERO_URI,
     zones: CMNH_ZONES, packages: CMNH_PACKAGES, hasZones: false
   }
@@ -786,14 +851,19 @@ function currentCompany(){ return COMPANIES[state.company]; }
 
 const state = { company: localStorage.getItem('active_company') || 'tranquila', groupFilter:'all', zoneFilter:'all', history:[], quotePkg:null, roomChoice:null, effDay:null, effMonth:null, qty:1, durationType:'day', escortOn:false };
 
+/* ---------- Google Sheet Web App URLs (hardcoded — no settings screen needed) ---------- */
+const SHEET_URLS = {
+  tranquila: 'https://script.google.com/macros/s/AKfycbzJlaVsIsblWt5deVnrOYiIOZp66NePJukmAObeeRuVcqAvUeZI49WDIHq0tT-63YqgJQ/exec',
+  cmnh: 'https://script.google.com/macros/s/AKfycbxIvGstuM53ZXV38gylph1nyy3yhSFySTFe3ZbWCeKJWVQguMyWEDLhITBGV3C8XyihcQ/exec'
+};
+function sheetUrl(companyKey){ return SHEET_URLS[companyKey] || ''; }
+
 /* ---------- company-scoped localStorage key helpers (with migration from old single-company keys) ---------- */
-function sheetUrlKey(companyKey){ return 'sheet_url_' + companyKey; }
 function localLogKey(companyKey){ return 'local_log_' + companyKey; }
 function historyCacheKey(companyKey){ return 'history_cache_' + companyKey; }
 function recentKey(companyKey){ return 'recent_pkgs_' + companyKey; }
 (function migrateOldKeys(){
   const map = [
-    ['tranquila_sheet_url', sheetUrlKey('tranquila')],
     ['tranquila_local_log', localLogKey('tranquila')],
     ['tranquila_history_cache', historyCacheKey('tranquila')],
     ['tranquila_recent_pkgs', recentKey('tranquila')],
@@ -1106,7 +1176,7 @@ function openQuote(id, roomChoice){
       '<div class="total-box"><div class="tl">ยอดรวมค่าบริการโดยประมาณ</div><div class="tv" id="qTotal">฿0</div></div>' +
       '<div class="btn-row">' +
         '<button class="btn btn-secondary" id="quoteCancel">ยกเลิก</button>' +
-        '<button class="btn btn-primary" id="quoteSubmit">สร้าง PDF และส่งไลน์</button>' +
+        '<button class="btn btn-primary" id="quoteSubmit">บันทึกใบเสนอราคา</button>' +
       '</div>' +
     '</div>';
 
@@ -1187,87 +1257,107 @@ async function submitQuote(){
   const total = computeTotal();
   const effDay = state.effDay != null ? state.effDay : p.priceDay;
   const effMonth = state.effMonth != null ? state.effMonth : p.priceMonth;
-  const durationLabel = state.durationType === 'day' ? 'รายวัน' : (state.durationType === 'daycare12' ? 'Day Care 12 ชม.' : 'รายเดือน');
+  const durLabels = { day:['รายวัน','Daily'], daycare12:['Day Care 12 ชม.','Day Care (12 hrs)'], month:['รายเดือน','Monthly'] };
+  const durPair = durLabels[state.durationType] || durLabels.day;
   const record = {
+    company: state.company,
     staff: staff || '-',
     customerName, customerContact,
-    group: g.name, zone: z.name, roomType: p.room,
+    group: g.name, groupEN: g.nameEN,
+    zone: z.name, zoneEN: z.nameEN,
+    roomType: p.room, roomTypeEN: p.roomEN || p.room,
     roomChoice: state.roomChoice ? state.roomChoice.name : '',
+    roomChoiceEN: state.roomChoice ? (state.roomChoice.nameEN || state.roomChoice.name) : '',
+    svc: p.svc,
     priceDay: effDay, priceMonth: effMonth,
-    durationType: durationLabel,
+    durationType: durPair[0], durationTypeEN: durPair[1], durationTypeKey: state.durationType,
     durationValue: state.qty,
     total, escort: state.escortOn && state.durationType==='month',
     notes
   };
 
   const submitBtn = $('#quoteSubmit');
-  submitBtn.disabled = true; submitBtn.textContent = 'กำลังสร้าง PDF...';
+  submitBtn.disabled = true; submitBtn.textContent = 'กำลังบันทึก...';
 
   try{
-    const blob = await buildPdfBlob(record, p);
-    const filename = 'ใบเสนอราคา-' + customerName.replace(/\\s+/g,'') + '.pdf';
-    const textSummary = 'ใบเสนอราคา Tranquila Elderly Care\\nลูกค้า: ' + customerName + '\\nแพ็กเกจ: ' + p.room + ' (' + g.name + ')\\nยอดรวม: ฿' + fmt(total);
-    await shareOrDownload(blob, filename, textSummary);
-    saveLocalLogEntry(record);
+    const saved = saveLocalLogEntry(record);
     syncLocalLog();
     closeQuote();
-    toast('สร้างใบเสนอราคาเรียบร้อย ✔','ok');
+    toast('บันทึกใบเสนอราคาเรียบร้อย ✔','ok');
+    openReceipt(saved);
   }catch(err){
     console.error(err);
-    toast('เกิดข้อผิดพลาดในการสร้าง PDF','err');
+    toast('เกิดข้อผิดพลาดในการบันทึก','err');
   }finally{
-    submitBtn.disabled = false; submitBtn.textContent = 'สร้าง PDF และส่งไลน์';
+    submitBtn.disabled = false; submitBtn.textContent = 'บันทึกใบเสนอราคา';
   }
 }
 
-function buildPdfHtml(record, p){
+function buildReceiptHtml(record, lang){
+  lang = lang || 'th';
   const cc = currentCompany();
-  const svc = SERVICES[p.svc];
-  const excl = EXCLUDED.slice();
+  const L = LABELS[lang];
+  const svcKey = record.svc || 'standard';
+  const svc = SERVICES[svcKey] || SERVICES.standard;
+  const svcLeft = lang === 'en' ? (svc.leftEN || svc.left) : svc.left;
+  const svcRight = lang === 'en' ? (svc.rightEN || svc.right) : svc.right;
+  const excl = (lang === 'en' ? EXCLUDED_EN : EXCLUDED).slice();
   const half = Math.ceil(excl.length/2);
   const exclLeft = excl.slice(0, half), exclRight = excl.slice(half);
-  if(record.escort) exclRight.push(ESCORT_NOTE);
-  const dateStr = new Date().toLocaleDateString('th-TH', { year:'numeric', month:'long', day:'numeric' });
-  const durationLine = record.durationType + ' × ' + record.durationValue + (record.escort ? ' · รวมเจ้าหน้าที่ประกบ 24 ชม.' : '');
+  if(record.escort) exclRight.push(lang === 'en' ? ESCORT_NOTE_EN : ESCORT_NOTE);
+  const dateStr = lang === 'en'
+    ? new Date().toLocaleDateString('en-GB', { year:'numeric', month:'long', day:'numeric' })
+    : new Date().toLocaleDateString('th-TH', { year:'numeric', month:'long', day:'numeric' });
+
+  const groupTxt = lang === 'en' ? (record.groupEN || record.group) : record.group;
+  const zoneTxt = lang === 'en' ? (record.zoneEN || record.zone) : record.zone;
+  const roomTxt = lang === 'en' ? (record.roomTypeEN || record.roomType) : record.roomType;
+  const roomChoiceTxt = lang === 'en' ? (record.roomChoiceEN || record.roomChoice) : record.roomChoice;
+  const durationTxt = lang === 'en' ? (record.durationTypeEN || record.durationType) : record.durationType;
+  const tagline = lang === 'en' ? (cc.taglineEN || cc.tagline) : cc.tagline;
+  const escortSuffix = record.escort ? (' · ' + L.escortIncl) : '';
+  const durationLine = durationTxt + ' ' + L.times + ' ' + record.durationValue + escortSuffix;
+  const notesArr = lang === 'en' ? NOTES_EN : NOTES;
 
   return (
     '<div class="pdf-head">' +
-      '<div class="pdf-brand"><img src="' + cc.logo + '" alt="' + esc(cc.name) + '"><div><div class="pdf-logo">' + esc(cc.name) + '</div><div class="pdf-sub">' + esc(cc.fullName) + ' · ' + esc(cc.tagline) + '</div></div></div>' +
-      '<div><div class="pdf-doctitle">ใบเสนอราคาค่าบริการ</div><div class="pdf-date">' + dateStr + '</div></div>' +
+      '<div class="pdf-brand"><img src="' + cc.logo + '" alt="' + esc(cc.name) + '"><div><div class="pdf-logo">' + esc(cc.name) + '</div><div class="pdf-sub">' + esc(cc.fullName) + ' · ' + esc(tagline) + '</div></div></div>' +
+      '<div><div class="pdf-doctitle">' + esc(L.docTitle) + '</div><div class="pdf-date">' + dateStr + '</div></div>' +
     '</div>' +
     '<table>' +
-      '<tr><td class="lbl">ลูกค้า</td><td>' + esc(record.customerName) + '</td></tr>' +
-      '<tr><td class="lbl">ติดต่อ</td><td>' + esc(record.customerContact || '-') + '</td></tr>' +
-      '<tr><td class="lbl">เจ้าหน้าที่ผู้เสนอ</td><td>' + esc(record.staff) + '</td></tr>' +
-      '<tr><td class="lbl">กลุ่มผู้รับบริการ</td><td>' + esc(record.group) + '</td></tr>' +
-      '<tr><td class="lbl">โซน / ห้องพัก</td><td>' + esc(record.zone) + ' · ' + esc(record.roomType) + (record.roomChoice ? ' · ' + esc(record.roomChoice) : '') + '</td></tr>' +
-      '<tr><td class="lbl">อัตราค่าบริการ</td><td>฿' + fmt(record.priceDay) + ' / วัน (หรือ ฿' + fmt(record.priceMonth) + ' / เดือน)</td></tr>' +
-      '<tr><td class="lbl">รูปแบบที่เลือก</td><td>' + esc(durationLine) + '</td></tr>' +
-      (record.notes ? '<tr><td class="lbl">หมายเหตุ</td><td>' + esc(record.notes) + '</td></tr>' : '') +
+      '<tr><td class="lbl">' + esc(L.customer) + '</td><td>' + esc(record.customerName) + '</td></tr>' +
+      '<tr><td class="lbl">' + esc(L.contact) + '</td><td>' + esc(record.customerContact || '-') + '</td></tr>' +
+      '<tr><td class="lbl">' + esc(L.staff) + '</td><td>' + esc(record.staff) + '</td></tr>' +
+      '<tr><td class="lbl">' + esc(L.group) + '</td><td>' + esc(groupTxt) + '</td></tr>' +
+      '<tr><td class="lbl">' + esc(L.zoneRoom) + '</td><td>' + esc(zoneTxt) + ' · ' + esc(roomTxt) + (roomChoiceTxt ? ' · ' + esc(roomChoiceTxt) : '') + '</td></tr>' +
+      '<tr><td class="lbl">' + esc(L.rate) + '</td><td>฿' + fmt(record.priceDay) + ' ' + esc(L.perDay) + ' (' + esc(L.or) + ' ฿' + fmt(record.priceMonth) + ' ' + esc(L.perMonth) + ')</td></tr>' +
+      '<tr><td class="lbl">' + esc(L.plan) + '</td><td>' + esc(durationLine) + '</td></tr>' +
+      (record.notes ? '<tr><td class="lbl">' + esc(L.notes) + '</td><td>' + esc(record.notes) + '</td></tr>' : '') +
     '</table>' +
-    '<div class="pdf-total"><div class="tl">ยอดรวมค่าบริการโดยประมาณ</div><div class="tv">฿' + fmt(record.total) + '</div></div>' +
-    pdfPhotoStrip(p.room) +
-    '<div class="pdf-section-title">บริการที่ได้รับ</div>' +
-    '<div class="pdf-cols"><ul>' + svc.left.map(t=>'<li>'+esc(t)+'</li>').join('') + '</ul><ul>' + svc.right.map(t=>'<li>'+esc(t)+'</li>').join('') + '</ul></div>' +
-    '<div class="pdf-section-title">ค่าใช้จ่ายอื่น ๆ ที่ไม่รวมในค่าบริการ (ญาติสามารถนำมาเองได้)</div>' +
+    '<div class="pdf-total"><div class="tl">' + esc(L.total) + '</div><div class="tv">฿' + fmt(record.total) + '</div></div>' +
+    pdfPhotoStrip(record.roomType, lang) +
+    '<div class="pdf-section-title">' + esc(L.servicesTitle) + '</div>' +
+    '<div class="pdf-cols"><ul>' + svcLeft.map(t=>'<li>'+esc(t)+'</li>').join('') + '</ul><ul>' + svcRight.map(t=>'<li>'+esc(t)+'</li>').join('') + '</ul></div>' +
+    '<div class="pdf-section-title">' + esc(L.exclTitle) + '</div>' +
     '<div class="pdf-cols"><ul>' + exclLeft.map(t=>'<li>'+esc(t)+'</li>').join('') + '</ul><ul>' + exclRight.map(t=>'<li>'+esc(t)+'</li>').join('') + '</ul></div>' +
-    '<div class="pdf-footer">' + NOTES.map(esc).join(' · ') + '<br>ใบเสนอราคานี้เป็นการประมาณการเบื้องต้น ราคาอาจเปลี่ยนแปลงตามการประเมินอาการจริงหน้างาน · จัดทำโดย Tranquila Elderly Care</div>'
+    '<div class="pdf-footer">' + notesArr.map(esc).join(' · ') + '<br>' + esc(L.footer) + ' ' + esc(cc.fullName) + '</div>'
   );
 }
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-function pdfPhotoStrip(roomName){
+function pdfPhotoStrip(roomName, lang){
   const photos = ROOM_IMAGES[roomName];
   if(!photos || !photos.length) return '';
   const pick = [photos[0], photos[1] || photos[0]];
-  return '<div class="pdf-section-title">ภาพห้องพัก</div><div class="pdf-photos">' +
-    pick.map(ph => '<div class="pf"><img src="' + ph.src + '"><div class="pc">' + esc(ph.caption) + '</div></div>').join('') +
+  const title = lang === 'en' ? LABELS.en.photosTitle : LABELS.th.photosTitle;
+  return '<div class="pdf-section-title">' + esc(title) + '</div><div class="pdf-photos">' +
+    pick.map(ph => '<div class="pf"><img src="' + ph.src + '"><div class="pc">' + esc(lang === 'en' ? (ph.captionEN || ph.caption) : ph.caption) + '</div></div>').join('') +
     '</div>';
 }
 
-async function buildPdfBlob(record, p){
+async function buildPdfBlob(record, lang){
   const tpl = $('#pdfTemplate');
-  tpl.innerHTML = buildPdfHtml(record, p);
+  tpl.innerHTML = buildReceiptHtml(record, lang);
   if(document.fonts && document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
   await new Promise(r => setTimeout(r, 60));
   const canvas = await html2canvas(tpl, { scale:2, backgroundColor:'#ffffff', useCORS:true });
@@ -1293,18 +1383,89 @@ async function shareOrDownload(blob, filename, textSummary){
   try{
     const file = new File([blob], filename, { type:'application/pdf' });
     if(navigator.canShare && navigator.canShare({ files:[file] })){
-      await navigator.share({ files:[file], title:'ใบเสนอราคา Tranquila Elderly Care', text: textSummary });
+      await navigator.share({ files:[file], title: LABELS.th.docTitle + ' ' + currentCompany().name, text: textSummary });
       return;
     }
   }catch(err){
     if(err && err.name === 'AbortError') return;
   }
+  downloadBlob(blob, filename);
+  toast('ดาวน์โหลด PDF แล้ว เปิด LINE หรืออีเมลเพื่อแนบไฟล์ส่งลูกค้าได้เลย','ok');
+}
+function downloadBlob(blob, filename){
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 5000);
-  toast('ดาวน์โหลด PDF แล้ว เปิด LINE เพื่อแนบไฟล์ส่งลูกค้าได้เลย','ok');
 }
+
+/* ============================================================
+   RECEIPT PREVIEW MODAL (post-save preview + PDF / print / share)
+   ============================================================ */
+function receiptFilename(record){
+  const safeName = (record.customerName || 'quote').replace(/\s+/g,'');
+  return (state.receiptLang === 'en' ? 'Quotation-' : 'ใบเสนอราคา-') + safeName + '.pdf';
+}
+function openReceipt(record){
+  state.receiptRecord = record;
+  state.receiptLang = 'th';
+  $('#receiptLangSwitch').querySelectorAll('.rl-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === 'th'));
+  $('#receiptView').innerHTML = buildReceiptHtml(record, 'th');
+  $('#receiptBackdrop').classList.add('show');
+}
+function closeReceipt(){
+  $('#receiptBackdrop').classList.remove('show');
+  state.receiptRecord = null;
+}
+function setReceiptLang(lang){
+  state.receiptLang = lang;
+  $('#receiptLangSwitch').querySelectorAll('.rl-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  $('#receiptView').innerHTML = buildReceiptHtml(state.receiptRecord, lang);
+}
+async function receiptDownloadPdf(){
+  const record = state.receiptRecord; if(!record) return;
+  const btn = $('#receiptDownloadBtn');
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'กำลังสร้าง PDF...';
+  try{
+    const blob = await buildPdfBlob(record, state.receiptLang);
+    downloadBlob(blob, receiptFilename(record));
+    toast('ดาวน์โหลด PDF แล้ว ✔','ok');
+  }catch(err){
+    console.error(err);
+    toast('เกิดข้อผิดพลาดในการสร้าง PDF','err');
+  }finally{
+    btn.disabled = false; btn.textContent = orig;
+  }
+}
+async function receiptSharePdf(){
+  const record = state.receiptRecord; if(!record) return;
+  const btn = $('#receiptShareBtn');
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'กำลังเตรียมไฟล์...';
+  try{
+    const blob = await buildPdfBlob(record, state.receiptLang);
+    const g = record.group;
+    const textSummary = currentCompany().name + '\nลูกค้า: ' + record.customerName + '\nแพ็กเกจ: ' + record.roomType + ' (' + g + ')\nยอดรวม: ฿' + fmt(record.total);
+    await shareOrDownload(blob, receiptFilename(record), textSummary);
+  }catch(err){
+    console.error(err);
+    toast('เกิดข้อผิดพลาดในการสร้าง PDF','err');
+  }finally{
+    btn.disabled = false; btn.textContent = orig;
+  }
+}
+function receiptPrint(){
+  const record = state.receiptRecord; if(!record) return;
+  $('#printArea').innerHTML = '<div class="receipt-doc">' + buildReceiptHtml(record, state.receiptLang) + '</div>';
+  window.print();
+}
+$('#closeReceipt').addEventListener('click', closeReceipt);
+$('#receiptBackdrop').addEventListener('click', (e) => { if(e.target.id === 'receiptBackdrop') closeReceipt(); });
+$('#receiptLangSwitch').querySelectorAll('.rl-btn').forEach(btn => btn.addEventListener('click', () => setReceiptLang(btn.dataset.lang)));
+$('#receiptDownloadBtn').addEventListener('click', receiptDownloadPdf);
+$('#receiptPrintBtn').addEventListener('click', receiptPrint);
+$('#receiptShareBtn').addEventListener('click', receiptSharePdf);
 
 /* ============================================================
    GOOGLE SHEET: LOG + HISTORY (with offline-safe local queue)
@@ -1324,7 +1485,7 @@ function saveLocalLogEntry(record){
 }
 async function syncLocalLog(companyKey){
   companyKey = companyKey || state.company;
-  const url = localStorage.getItem(sheetUrlKey(companyKey));
+  const url = sheetUrl(companyKey);
   if(!url) return;
   const key = localLogKey(companyKey);
   let log = [];
@@ -1344,7 +1505,7 @@ async function loadHistory(){
   const companyKey = state.company;
   const cc = currentCompany();
   const histTitle = $('#histTitle'); if(histTitle) histTitle.textContent = 'ประวัติการเสนอราคา · ' + cc.name;
-  const url = localStorage.getItem(sheetUrlKey(companyKey));
+  const url = sheetUrl(companyKey);
   const listEl = $('#histList'), emptyEl = $('#histEmpty');
   listEl.innerHTML = '<div class="empty-state">กำลังโหลดข้อมูล...</div>';
   emptyEl.style.display = 'none';
@@ -1404,9 +1565,17 @@ function renderHistory(){
     return '<div class="hist-row" data-idx="' + state.history.indexOf(r) + '">' +
       '<div class="hist-left"><div class="hist-name">' + esc(r.customerName || 'ไม่ระบุชื่อ') + pendingTag + '</div><div class="hist-meta">' + esc(r.roomType) + (r.roomChoice ? ' · ' + esc(r.roomChoice) : '') + ' · ' + esc(r.zone) + ' · ' + esc(r.staff) + '</div></div>' +
       '<div class="hist-right"><div class="hist-total">฿' + fmt(r.total || 0) + '</div><div class="hist-date">' + d + '</div></div>' +
+      '<button class="hist-print-btn" data-print-idx="' + state.history.indexOf(r) + '" title="พิมพ์ / ดูใบเสนอราคา"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>' +
     '</div>';
   }).join('');
-  listEl.querySelectorAll('.hist-row').forEach(row => row.addEventListener('click', () => openHistDetail(state.history[row.dataset.idx])));
+  listEl.querySelectorAll('.hist-row').forEach(row => row.addEventListener('click', (e) => {
+    if(e.target.closest('.hist-print-btn')) return;
+    openHistDetail(state.history[row.dataset.idx]);
+  }));
+  listEl.querySelectorAll('.hist-print-btn').forEach(btn => btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openReceipt(state.history[btn.dataset.printIdx]);
+  }));
 }
 $('#histSearch').addEventListener('input', renderHistory);
 
@@ -1433,64 +1602,6 @@ function openHistDetail(r){
 }
 function histRow(label, val){ return '<tr><td style="padding:7px 4px;border-bottom:1px solid var(--line);color:var(--ink-soft);width:38%;">' + label + '</td><td style="padding:7px 4px;border-bottom:1px solid var(--line);">' + esc(val) + '</td></tr>'; }
 $('#histBackdrop').addEventListener('click', (e) => { if(e.target.id==='histBackdrop') $('#histBackdrop').classList.remove('show'); });
-
-/* ============================================================
-   SETTINGS (both companies shown together)
-   ============================================================ */
-function renderSheetSettingsCards(){
-  const container = $('#sheetSettingsContainer');
-  container.innerHTML = Object.values(COMPANIES).map(c =>
-    '<div class="settings-card">' +
-      '<h3>' + esc(c.name) + ' — Google Sheet Web App URL <span id="connStatus-' + c.key + '" class="status-pill bad" style="margin-left:8px;"><span class="sdot"></span>ยังไม่เชื่อมต่อ</span></h3>' +
-      '<p>ทุกครั้งที่สร้างใบเสนอราคาให้ ' + esc(c.name) + ' ระบบจะบันทึกรายการลง Google Sheet นี้อัตโนมัติ</p>' +
-      '<div class="field"><input type="text" id="sheetUrlInput-' + c.key + '" placeholder="https://script.google.com/macros/s/xxxxx/exec"></div>' +
-      '<div class="btn-row">' +
-        '<button class="btn btn-secondary" data-testconn="' + c.key + '">ทดสอบการเชื่อมต่อ</button>' +
-        '<button class="btn btn-primary" data-saveurl="' + c.key + '">บันทึก URL</button>' +
-      '</div>' +
-    '</div>'
-  ).join('');
-
-  container.querySelectorAll('[data-saveurl]').forEach(btn => btn.addEventListener('click', () => {
-    const ck = btn.dataset.saveurl;
-    const v = $('#sheetUrlInput-' + ck).value.trim();
-    if(v) localStorage.setItem(sheetUrlKey(ck), v); else localStorage.removeItem(sheetUrlKey(ck));
-    refreshConnStatus(ck);
-    toast(v ? 'บันทึก URL แล้ว' : 'ลบ URL แล้ว','ok');
-  }));
-  container.querySelectorAll('[data-testconn]').forEach(btn => btn.addEventListener('click', async () => {
-    const ck = btn.dataset.testconn;
-    const v = $('#sheetUrlInput-' + ck).value.trim();
-    if(!v){ toast('กรุณาใส่ URL ก่อนครับ','err'); return; }
-    try{
-      const res = await fetch(v);
-      await res.json();
-      toast(COMPANIES[ck].name + ': เชื่อมต่อสำเร็จ ✔','ok');
-    }catch(err){
-      toast(COMPANIES[ck].name + ': เชื่อมต่อไม่สำเร็จ ตรวจสอบ URL และการ Deploy อีกครั้ง','err');
-    }
-  }));
-}
-function loadSettings(){
-  $('#staffNameInput').value = localStorage.getItem('staff_name') || '';
-  renderSheetSettingsCards();
-  Object.keys(COMPANIES).forEach(ck => {
-    const input = $('#sheetUrlInput-' + ck);
-    if(input) input.value = localStorage.getItem(sheetUrlKey(ck)) || '';
-    refreshConnStatus(ck);
-  });
-}
-function refreshConnStatus(companyKey){
-  const has = !!localStorage.getItem(sheetUrlKey(companyKey));
-  const pill = $('#connStatus-' + companyKey);
-  if(!pill) return;
-  pill.className = 'status-pill ' + (has ? 'ok' : 'bad');
-  pill.innerHTML = '<span class="sdot"></span>' + (has ? 'เชื่อมต่อแล้ว' : 'ยังไม่เชื่อมต่อ');
-}
-$('#saveStaffBtn').addEventListener('click', () => {
-  localStorage.setItem('staff_name', $('#staffNameInput').value.trim());
-  toast('บันทึกชื่อเจ้าหน้าที่แล้ว','ok');
-});
 
 /* ============================================================
    LANDING (choose company) / BRAND / HERO
@@ -1584,8 +1695,7 @@ renderHero();
 renderChips();
 renderGrid();
 renderRecent();
-loadSettings();
-syncLocalLog();
+Object.keys(COMPANIES).forEach(ck => syncLocalLog(ck));
 showLanding();
 </script>
 </body>
