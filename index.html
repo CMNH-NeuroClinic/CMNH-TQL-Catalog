@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Tranquila Elderly Care · แคตตาล็อกและใบเสนอราคา</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yellowtail&family=Taviraj:wght@500;600;700&family=Sarabun:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --paper:#FBF9F5;
+    --paper-dim:#F3EEE4;
+    --surface:#FFFFFF;
+    --ink:#251A33;
+    --ink-soft:#6C6278;
+    --ink-faint:#A79FB0;
+    --line:#E9E2ED;
+
+    --teal:#128A96;
+    --teal-deep:#0B5F68;
+    --teal-soft:#E1F3F3;
+    --teal-ink:#0B4B52;
+
+    --purple:#6B3FA6;
+    --purple-deep:#4B2778;
+    --purple-soft:#F1E7FA;
+    --purple-ink:#3E2159;
+
+    --cmnh-blue:#1E4D8C;
+    --cmnh-blue-deep:#0F2E57;
+    --cmnh-blue-soft:#E4ECF7;
+
+    --ribbon:#C4374B;
+    --ribbon-dark:#93222F;
+    --gold:#C79A3E;
+    --sage:#3E9E6D;
+    --sage-soft:#E1F3EA;
+
+    --radius-md:16px;
+    --radius-lg:26px;
+    --shadow-card:0 2px 5px rgba(60,40,90,.06), 0 10px 24px rgba(60,40,90,.08);
+    --shadow-pop:0 8px 18px rgba(60,40,90,.10), 0 22px 44px rgba(60,40,90,.16);
+    --shadow-inset:inset 0 1px 2px rgba(60,40,90,.05);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Sarabun',sans-serif;
+    font-size:15px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:90px;
+  }
+  .font-display{font-family:'Taviraj','Sarabun',sans-serif;}
+  .font-logo{font-family:'Yellowtail',cursive;}
+  .font-mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  button{font-family:inherit;}
+  :focus-visible{outline:2.5px solid var(--teal); outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms !important; transition-duration:.01ms !important;} }
+
+  .shell{max-width:1180px;margin:0 auto;padding:0 20px 40px;}
+
+  /* ---------- topbar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:40;
+    background:linear-gradient(180deg, var(--paper) 78%, transparent);
+    padding:18px 20px 10px;
+    max-width:1180px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between; gap:14px;
+    flex-wrap:wrap;
+  }
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-mark{
+    width:46px; height:46px; border-radius:50%;
+    box-shadow:var(--shadow-card);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; overflow:hidden; background:#fff;
+  }
+  .brand-mark img{width:100%; height:100%; object-fit:cover;}
+  .brand-text{display:flex; flex-direction:column; line-height:1.1;}
+  .brand-name{font-family:'Yellowtail',cursive; font-weight:400; font-size:30px; color:var(--purple-deep); margin-top:2px;}
+  .brand-sub{font-size:11.5px; color:var(--ink-soft); letter-spacing:.4px; font-family:'Sarabun'; font-weight:600;}
+
+  .tabs{display:flex; gap:4px; background:var(--paper-dim); padding:4px; border-radius:13px; width:fit-content;}
+  .company-switch{display:flex; gap:4px; background:var(--paper-dim); padding:4px; border-radius:13px; width:fit-content;}
+  .cs-btn{
+    border:none; background:transparent; cursor:pointer;
+    padding:9px 16px; border-radius:10px;
+    font-size:13px; font-weight:700; color:var(--ink-soft);
+    transition:background .18s, color .18s, transform .12s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .cs-btn:active{transform:scale(.96);}
+  .cs-btn.active{background:var(--surface); color:var(--purple-deep); box-shadow:var(--shadow-card);}
+  .switch-company-link{
+    width:32px; height:32px; border-radius:10px; border:1px solid var(--line); background:var(--paper-dim);
+    display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--ink-soft); margin-left:2px; flex-shrink:0;
+  }
+  .switch-company-link:active{transform:scale(.94);}
+  .topbar.topbar-hidden{display:none;}
+
+  /* ---------- landing (choose company) ---------- */
+  .landing-head{padding:36px 4px 22px; text-align:center;}
+  .landing-eyebrow{font-family:'IBM Plex Mono'; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--ink-faint); font-weight:600;}
+  .landing-title{font-family:'Taviraj'; font-weight:600; font-size:26px; color:var(--ink); margin-top:6px;}
+  .landing-sub{font-size:13px; color:var(--ink-soft); margin-top:6px;}
+  .landing-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px; padding-bottom:20px;}
+  @media (max-width:640px){ .landing-grid{grid-template-columns:1fr;} }
+  .landing-card{
+    position:relative; border-radius:var(--radius-lg); overflow:hidden; cursor:pointer;
+    box-shadow:var(--shadow-card); transition:transform .16s, box-shadow .16s;
+    min-height:280px; display:flex; align-items:flex-end; background-size:cover; background-position:center;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .landing-card:hover{transform:translateY(-4px); box-shadow:var(--shadow-pop);}
+  .landing-card:active{transform:scale(.98);}
+  .landing-card.card-photo::before{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(0deg, rgba(20,10,30,.85) 0%, rgba(20,10,30,.25) 55%, rgba(20,10,30,.05) 80%);
+  }
+  .landing-card.card-brand{background:linear-gradient(135deg, var(--cmnh-blue) 0%, var(--cmnh-blue-deep) 100%);}
+  .landing-card-content{position:relative; z-index:1; padding:26px 24px 24px; width:100%;}
+  .landing-card-logo{width:56px; height:56px; border-radius:50%; background:#fff; padding:5px; box-shadow:0 3px 10px rgba(0,0,0,.25); margin-bottom:14px;}
+  .landing-card-name{font-family:'Yellowtail',cursive; font-size:34px; color:#fff; line-height:1; text-shadow:0 2px 8px rgba(0,0,0,.35);}
+  .landing-card.card-brand .landing-card-name{font-family:'Taviraj'; font-weight:600; font-size:26px;}
+  .landing-card-full{font-size:12px; color:rgba(255,255,255,.82); margin-top:6px;}
+  .landing-card-tagline{font-size:12.5px; color:rgba(255,255,255,.92); margin-top:10px; line-height:1.5;}
+  .landing-card-cta{
+    margin-top:16px; display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,.16);
+    backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.3); color:#fff; font-size:12.5px; font-weight:700;
+    padding:8px 16px; border-radius:999px;
+  }
+  .landing-card-recent{position:absolute; top:16px; right:16px; z-index:1; background:rgba(255,255,255,.9); color:var(--purple-deep); font-size:10.5px; font-weight:700; padding:4px 10px; border-radius:999px;}
+  .tab-btn{
+    border:none; background:transparent; cursor:pointer;
+    padding:9px 16px; border-radius:10px;
+    font-size:13.5px; font-weight:700; color:var(--ink-soft);
+    display:inline-flex; align-items:center; gap:6px;
+    transition:background .18s, color .18s, transform .12s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .tab-btn:active{transform:scale(.96);}
+  .tab-btn.active{background:var(--surface); color:var(--purple-deep); box-shadow:var(--shadow-card);}
+  .view{display:none;}
+  .view.active{display:block; animation:fade .28s cubic-bezier(.22,1,.36,1);}
+  @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  /* ---------- section headings ---------- */
+  .section-head{margin:22px 0 12px;}
+  .section-eyebrow{font-family:'IBM Plex Mono'; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink-faint); font-weight:600;}
+  .section-title{font-family:'Taviraj'; font-weight:600; font-size:22px; color:var(--ink); margin:2px 0 0;}
+
+  /* ---------- filter chips ---------- */
+  .chip-row{display:flex; gap:8px; overflow-x:auto; padding:2px 2px 8px; scrollbar-width:none;}
+  .chip-row::-webkit-scrollbar{display:none;}
+  .filter-chip{
+    flex-shrink:0; border:1.5px solid var(--line); background:var(--surface); cursor:pointer;
+    padding:9px 15px; border-radius:999px; font-size:13px; font-weight:600; color:var(--ink-soft);
+    display:inline-flex; align-items:center; gap:7px; transition:all .15s; -webkit-tap-highlight-color:transparent;
+  }
+  .filter-chip:active{transform:scale(.96);}
+  .filter-chip.active{background:var(--purple); border-color:var(--purple); color:#fff; box-shadow:var(--shadow-card);}
+  .filter-chip .dot{width:8px; height:8px; border-radius:50%; flex-shrink:0;}
+  .filter-chip.zone-villa.active{background:var(--teal); border-color:var(--teal);}
+  .filter-chip.zone-private.active{background:var(--purple); border-color:var(--purple);}
+  .filter-chip.zone-cmnh.active{background:var(--cmnh-blue); border-color:var(--cmnh-blue);}
+
+  /* ---------- package cards ---------- */
+  .pkg-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:16px; margin-top:6px;}
+  .pkg-card{
+    position:relative; background:var(--surface); border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-card); border:1px solid var(--line); overflow:hidden; cursor:pointer;
+    transition:transform .16s, box-shadow .16s; -webkit-tap-highlight-color:transparent;
+  }
+  .pkg-card:hover{transform:translateY(-3px); box-shadow:var(--shadow-pop);}
+  .pkg-card:active{transform:scale(.98);}
+  .pkg-card .band{height:64px; display:flex; align-items:center; padding:0 18px; gap:10px; color:#fff;}
+  .pkg-card.zone-villa .band{background:linear-gradient(120deg, var(--teal) 0%, var(--teal-deep) 100%);}
+  .pkg-card.zone-private .band{background:linear-gradient(120deg, var(--purple) 0%, var(--purple-deep) 100%);}
+  .pkg-card.zone-cmnh .band{background:linear-gradient(120deg, var(--cmnh-blue) 0%, var(--cmnh-blue-deep) 100%);}
+  .band-icon{width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,.22); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .band-text{line-height:1.15;}
+  .band-zone{font-size:10.5px; letter-spacing:.6px; text-transform:uppercase; opacity:.85; font-weight:700;}
+  .band-room{font-family:'Taviraj'; font-weight:600; font-size:17px;}
+  .band-photo{height:140px; background-size:cover; background-position:center; position:relative; align-items:flex-end; padding:0 18px 12px;}
+  .band-photo-overlay{position:absolute; inset:0; background:linear-gradient(0deg, rgba(20,10,30,.72) 0%, rgba(20,10,30,.05) 65%);}
+  .band-text.photo{position:relative; z-index:1;}
+  .band-text.photo .band-room{text-shadow:0 1px 6px rgba(0,0,0,.4);}
+
+  /* ---------- photo gallery (detail modal) ---------- */
+  .gallery-scroll{display:flex; gap:10px; overflow-x:auto; padding:2px 2px 6px; margin-bottom:6px; scroll-snap-type:x mandatory;}
+  .gallery-scroll::-webkit-scrollbar{height:5px;}
+  .gallery-scroll::-webkit-scrollbar-thumb{background:var(--line); border-radius:99px;}
+  .gallery-item{flex:0 0 auto; width:78%; max-width:320px; scroll-snap-align:start;}
+  .gallery-item img{width:100%; height:190px; object-fit:cover; border-radius:16px; box-shadow:var(--shadow-card); display:block;}
+  .gallery-item .cap{font-size:11.5px; color:var(--ink-soft); margin-top:6px; text-align:center;}
+
+  /* ---------- room picker ---------- */
+  .room-pick-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media (max-width:480px){ .room-pick-grid{grid-template-columns:1fr;} }
+  .room-pick-card{border:1.5px solid var(--line); border-radius:16px; overflow:hidden; cursor:pointer; background:var(--surface); transition:transform .12s, box-shadow .12s;}
+  .room-pick-card:active{transform:scale(.97);}
+  .room-pick-card:hover{box-shadow:var(--shadow-card);}
+  .room-pick-card img{width:100%; height:110px; object-fit:cover; display:block;}
+  .room-pick-card .rp-body{padding:10px 12px;}
+  .room-pick-card .rp-name{font-size:13.5px; font-weight:700; color:var(--ink);}
+  .room-pick-card .rp-tag{display:inline-block; margin-top:4px; font-size:10.5px; font-weight:700; color:var(--sage); background:var(--sage-soft); padding:2px 8px; border-radius:999px;}
+  .room-pick-card .rp-tag-price{color:var(--purple-deep); background:var(--purple-soft); margin-left:4px;}
+  .room-pick-card .rp-noimg{width:100%; height:110px; background:linear-gradient(120deg, var(--teal-soft), var(--purple-soft)); display:flex; align-items:center; justify-content:center; font-family:'Taviraj'; font-weight:600; font-size:16px; color:var(--purple-deep);}
+  .mini-thumb-row{display:flex; gap:8px; overflow-x:auto; margin:8px 0 4px;}
+  .mini-thumb-row img{width:64px; height:64px; object-fit:cover; border-radius:10px; flex-shrink:0;}
+  .mini-thumb-row .thumb-fallback{width:64px; height:64px; border-radius:10px; flex-shrink:0; background:linear-gradient(120deg, var(--teal-soft), var(--purple-soft)); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--purple-deep); text-align:center; padding:2px;}
+
+  .pkg-card .ribbon{
+    position:absolute; top:14px; right:-34px; width:150px; text-align:center;
+    background:linear-gradient(120deg, var(--ribbon) 0%, var(--ribbon-dark) 100%);
+    color:#fff; font-family:'IBM Plex Mono'; font-weight:700; font-size:12.5px;
+    padding:5px 0; transform:rotate(40deg); box-shadow:0 3px 8px rgba(0,0,0,.22); letter-spacing:.3px;
+  }
+  .pkg-card .body-pad{padding:16px 18px 18px;}
+  .pkg-card .group-tag{
+    display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; color:var(--ink-soft);
+    background:var(--paper-dim); padding:5px 10px; border-radius:999px; margin-bottom:12px;
+  }
+  .price-line{display:flex; align-items:baseline; gap:8px; margin-bottom:2px;}
+  .price-day{font-family:'IBM Plex Mono'; font-weight:700; font-size:26px; color:var(--ink);}
+  .price-day-unit{font-size:12.5px; color:var(--ink-faint); font-weight:600;}
+  .price-month{font-family:'IBM Plex Mono'; font-size:13px; color:var(--ink-soft);}
+  .pkg-card .cta-row{display:flex; gap:8px; margin-top:14px;}
+  .btn-mini{
+    flex:1; text-align:center; border-radius:11px; padding:9px 10px; font-size:12.5px; font-weight:700;
+    border:1.5px solid var(--line); background:var(--surface); color:var(--ink-soft); cursor:pointer;
+  }
+  .btn-mini.primary{background:var(--ink); border-color:var(--ink); color:#fff;}
+  .pkg-card.zone-villa .btn-mini.primary{background:var(--teal-deep); border-color:var(--teal-deep);}
+  .pkg-card.zone-private .btn-mini.primary{background:var(--purple-deep); border-color:var(--purple-deep);}
+  .pkg-card.zone-cmnh .btn-mini.primary{background:var(--cmnh-blue-deep); border-color:var(--cmnh-blue-deep);}
+
+  .empty-state{padding:50px 20px; text-align:center; color:var(--ink-faint);}
+  .empty-state .em-title{font-family:'Taviraj'; font-size:18px; color:var(--ink-soft); margin-bottom:4px;}
+
+  /* ---------- modal (detail + quote) ---------- */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(40,26,60,.42); z-index:80; display:none;
+    align-items:flex-end; justify-content:center; backdrop-filter:blur(2px);
+  }
+  .modal-backdrop.show{display:flex;}
+  @media (min-width:760px){ .modal-backdrop{align-items:center;} }
+  .modal-sheet{
+    background:var(--surface); width:100%; max-width:600px; max-height:88vh; overflow-y:auto;
+    border-radius:26px 26px 0 0; box-shadow:var(--shadow-pop); animation:slideUp .25s cubic-bezier(.22,1,.36,1);
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  @media (min-width:760px){ .modal-sheet{border-radius:26px; animation:popIn .22s cubic-bezier(.22,1,.36,1);} }
+  @keyframes slideUp{from{transform:translateY(40px); opacity:0;} to{transform:translateY(0); opacity:1;}}
+  @keyframes popIn{from{transform:scale(.96); opacity:0;} to{transform:scale(1); opacity:1;}}
+  .modal-head{
+    padding:18px 20px; display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+    position:sticky; top:0; background:var(--surface); border-bottom:1px solid var(--line); z-index:2;
+  }
+  .modal-head .htxt{font-family:'Taviraj'; font-weight:600; font-size:19px;}
+  .modal-head .hsub{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+  .icon-btn{
+    width:34px; height:34px; border-radius:10px; border:1px solid var(--line); background:var(--paper-dim);
+    display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; color:var(--ink-soft);
+  }
+  .modal-body{padding:18px 20px 26px;}
+
+  .svc-grid{display:grid; grid-template-columns:1fr 1fr; gap:0 20px; margin:10px 0 18px;}
+  @media (max-width:480px){ .svc-grid{grid-template-columns:1fr;} }
+  .svc-grid ul{margin:0; padding-left:18px;}
+  .svc-grid li{font-size:13.5px; margin-bottom:7px; color:var(--ink);}
+  .svc-block-title{font-size:12px; font-weight:700; color:var(--teal-deep); text-transform:uppercase; letter-spacing:.4px; margin:14px 0 8px;}
+  .svc-block-title.excl{color:var(--ribbon-dark);}
+  .excl-list{margin:0; padding-left:18px;}
+  .excl-list li{font-size:12.8px; color:var(--ink-soft); margin-bottom:6px;}
+  .note-box{background:var(--paper-dim); border-radius:14px; padding:12px 14px; font-size:12.5px; color:var(--ink-soft); margin-top:10px;}
+  .note-box li{margin-bottom:5px;}
+
+  /* ---------- form fields ---------- */
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-size:12.5px; font-weight:700; color:var(--ink-soft); margin-bottom:6px;}
+  .field input[type=text], .field input[type=tel], .field input[type=number], .field textarea{
+    width:100%; border:1.5px solid var(--line); background:var(--paper-dim); border-radius:12px;
+    padding:11px 13px; font-size:14.5px; color:var(--ink); font-family:'Sarabun'; box-shadow:var(--shadow-inset);
+  }
+  .field textarea{resize:vertical; min-height:60px;}
+  .field input:focus, .field textarea:focus{border-color:var(--purple); background:var(--surface);}
+
+  .radio-chip-row{display:flex; gap:8px;}
+  .radio-chip{
+    flex:1; text-align:center; border:1.5px solid var(--line); border-radius:12px; padding:10px; cursor:pointer;
+    font-size:13.5px; font-weight:700; color:var(--ink-soft); background:var(--surface);
+  }
+  .radio-chip.checked{border-color:var(--purple); background:var(--purple-soft); color:var(--purple-deep);}
+
+  .stepper{display:flex; align-items:center; gap:10px;}
+  .stepper button{
+    width:38px; height:38px; border-radius:11px; border:1.5px solid var(--line); background:var(--surface);
+    font-size:18px; font-weight:700; color:var(--ink); cursor:pointer;
+  }
+  .stepper .val{font-family:'IBM Plex Mono'; font-weight:700; font-size:17px; min-width:34px; text-align:center;}
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--paper-dim); border-radius:14px; padding:12px 14px;}
+  .toggle-row .ttxt{font-size:13px; font-weight:600; color:var(--ink);}
+  .toggle-row .tsub{font-size:11.5px; color:var(--ink-faint); margin-top:1px;}
+  .switch{width:44px; height:26px; border-radius:999px; background:var(--line); position:relative; cursor:pointer; flex-shrink:0; transition:background .18s;}
+  .switch::after{content:''; position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.3); transition:transform .18s;}
+  .switch.on{background:var(--sage);}
+  .switch.on::after{transform:translateX(18px);}
+  .toggle-row.disabled{opacity:.5;}
+  .toggle-row.disabled .switch{cursor:not-allowed;}
+
+  /* ---------- inline room select (in quote modal) ---------- */
+  .room-select-row{display:flex; gap:9px; overflow-x:auto; padding:2px 2px 6px;}
+  .room-select-chip{
+    flex:0 0 auto; width:104px; border:2px solid var(--line); border-radius:14px; overflow:hidden; cursor:pointer;
+    background:var(--surface); transition:border-color .15s, transform .12s;
+  }
+  .room-select-chip:active{transform:scale(.96);}
+  .room-select-chip.selected{border-color:var(--purple); box-shadow:0 0 0 3px var(--purple-soft);}
+  .room-select-chip img{width:100%; height:64px; object-fit:cover; display:block;}
+  .room-select-chip .rsc-noimg{width:100%; height:64px; background:linear-gradient(120deg, var(--teal-soft), var(--purple-soft)); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--purple-deep); text-align:center; padding:2px;}
+  .room-select-chip .rsc-name{font-size:11px; font-weight:700; padding:6px 7px 8px; line-height:1.35; color:var(--ink);}
+  .room-select-chip .rsc-tag{display:inline-block; font-size:9px; font-weight:700; color:var(--sage); background:var(--sage-soft); padding:1px 5px; border-radius:6px; margin-top:2px;}
+  .room-select-chip .rsc-tag-price{color:var(--purple-deep); background:var(--purple-soft);}
+
+  /* ---------- recent shortcuts ---------- */
+  .recent-row{display:flex; gap:9px; overflow-x:auto; padding:2px 2px 4px; margin-bottom:4px;}
+  .recent-chip{
+    flex:0 0 auto; display:flex; align-items:center; gap:8px; border:1.5px solid var(--line); background:var(--surface);
+    border-radius:13px; padding:8px 13px 8px 9px; cursor:pointer; transition:transform .12s;
+  }
+  .recent-chip:active{transform:scale(.96);}
+  .recent-chip .rc-dot{width:9px; height:9px; border-radius:50%; flex-shrink:0;}
+  .recent-chip .rc-txt{line-height:1.2;}
+  .recent-chip .rc-name{font-size:12px; font-weight:700; color:var(--ink); white-space:nowrap;}
+  .recent-chip .rc-price{font-family:'IBM Plex Mono'; font-size:10.5px; color:var(--ink-soft);}
+
+  .total-box{
+    margin-top:18px; padding:16px 18px; border-radius:18px; background:linear-gradient(120deg, var(--purple-soft), var(--teal-soft));
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .total-box .tl{font-size:12.5px; font-weight:700; color:var(--ink-soft);}
+  .total-box .tv{font-family:'IBM Plex Mono'; font-weight:700; font-size:24px; color:var(--purple-deep);}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    border:none; border-radius:14px; padding:13px 18px; font-size:14.5px; font-weight:700; cursor:pointer;
+    -webkit-tap-highlight-color:transparent; transition:transform .12s, opacity .15s; width:100%;
+  }
+  .btn:active{transform:scale(.98);}
+  .btn-primary{background:linear-gradient(120deg, var(--teal) 0%, var(--purple) 100%); color:#fff; box-shadow:var(--shadow-card);}
+  .btn-secondary{background:var(--paper-dim); color:var(--ink-soft); border:1.5px solid var(--line);}
+  .btn[disabled]{opacity:.55; pointer-events:none;}
+  .btn-row{display:flex; gap:10px; margin-top:16px;}
+  .btn-row .btn{width:auto; flex:1;}
+
+  /* ---------- toast ---------- */
+  #toastHost{position:fixed; left:0; right:0; bottom:96px; z-index:120; display:flex; flex-direction:column; align-items:center; gap:8px; pointer-events:none;}
+  .toast{
+    background:var(--ink); color:#fff; padding:11px 18px; border-radius:999px; font-size:13px; font-weight:600;
+    box-shadow:var(--shadow-pop); animation:toastIn .22s ease; max-width:90vw; text-align:center;
+  }
+  .toast.err{background:var(--ribbon-dark);}
+  .toast.ok{background:var(--sage);}
+  @keyframes toastIn{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+
+  /* ---------- history ---------- */
+  .hist-row{
+    display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--surface);
+    border:1px solid var(--line); border-radius:16px; padding:13px 16px; margin-bottom:10px; box-shadow:var(--shadow-card);
+    cursor:pointer;
+  }
+  .hist-left{min-width:0;}
+  .hist-name{font-weight:700; font-size:14.5px; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .hist-meta{font-size:12px; color:var(--ink-soft); margin-top:2px;}
+  .hist-right{text-align:right; flex-shrink:0;}
+  .hist-total{font-family:'IBM Plex Mono'; font-weight:700; color:var(--purple-deep); font-size:15px;}
+  .hist-date{font-size:11px; color:var(--ink-faint); margin-top:2px;}
+  .hist-search{margin-bottom:14px;}
+  .hist-offline-banner{background:#FFF6E0; color:#8A6A0E; border:1px solid #F0DDA0; border-radius:12px; padding:10px 14px; font-size:12px; margin-bottom:12px; line-height:1.5;}
+  .pending-tag{display:inline-block; font-size:9.5px; font-weight:700; color:var(--gold); background:#FBF1DA; padding:1px 7px; border-radius:999px; margin-left:7px; vertical-align:middle;}
+
+  /* ---------- settings ---------- */
+  .settings-card{background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:18px 20px; margin-bottom:16px; box-shadow:var(--shadow-card);}
+  .settings-card h3{font-family:'Taviraj'; font-size:16.5px; margin:0 0 4px;}
+  .settings-card p{font-size:12.8px; color:var(--ink-soft); margin:0 0 14px;}
+  .steps-list{margin:0; padding-left:20px; font-size:13px; color:var(--ink); line-height:1.9;}
+  .steps-list code{background:var(--paper-dim); padding:1px 6px; border-radius:6px; font-family:'IBM Plex Mono'; font-size:12px;}
+  .status-pill{display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; padding:5px 11px; border-radius:999px;}
+  .status-pill.ok{background:var(--sage-soft); color:var(--sage);}
+  .status-pill.bad{background:#FCEBEC; color:var(--ribbon-dark);}
+  .status-pill .sdot{width:7px; height:7px; border-radius:50%; background:currentColor;}
+
+  /* ---------- pdf template (offscreen) ---------- */
+  #pdfTemplate{
+    position:fixed; left:-9999px; top:0; width:794px; background:#fff; color:#241A33; font-family:'Sarabun',sans-serif;
+    padding:48px 50px;
+  }
+  #pdfTemplate .pdf-head{display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid #6B3FA6; padding-bottom:16px; margin-bottom:22px;}
+  #pdfTemplate .pdf-brand{display:flex; align-items:center; gap:12px;}
+  #pdfTemplate .pdf-brand img{width:46px; height:46px; border-radius:50%; flex-shrink:0;}
+  #pdfTemplate .pdf-logo{font-family:'Yellowtail',cursive; font-size:34px; color:#4B2778; line-height:1;}
+  #pdfTemplate .pdf-sub{font-size:12px; color:#6C6278; margin-top:2px;}
+  #pdfTemplate .pdf-doctitle{font-family:'Taviraj',serif; font-weight:600; font-size:20px; text-align:right;}
+  #pdfTemplate .pdf-date{font-size:12px; color:#6C6278; text-align:right; margin-top:4px;}
+  #pdfTemplate .pdf-section-title{font-family:'Taviraj',serif; font-weight:600; font-size:15px; margin:20px 0 8px; color:#4B2778;}
+  #pdfTemplate table{width:100%; border-collapse:collapse; font-size:13px;}
+  #pdfTemplate td{padding:7px 4px; border-bottom:1px solid #E9E2ED; vertical-align:top;}
+  #pdfTemplate .lbl{color:#6C6278; width:34%;}
+  #pdfTemplate .pdf-total{margin-top:14px; background:#F1E7FA; border-radius:10px; padding:14px 18px; display:flex; justify-content:space-between; align-items:center;}
+  #pdfTemplate .pdf-total .tl{font-size:13px; font-weight:700; color:#4B2778;}
+  #pdfTemplate .pdf-total .tv{font-family:'IBM Plex Mono',monospace; font-size:24px; font-weight:700; color:#4B2778;}
+  #pdfTemplate .pdf-cols{display:flex; gap:26px; margin-top:6px;}
+  #pdfTemplate .pdf-cols ul{margin:0; padding-left:16px; font-size:12px; flex:1;}
+  #pdfTemplate .pdf-cols li{margin-bottom:5px;}
+  #pdfTemplate .pdf-footer{margin-top:24px; font-size:10.5px; color:#8A8296; border-top:1px solid #E9E2ED; padding-top:12px;}
+  #pdfTemplate .pdf-photos{display:flex; gap:14px; margin:6px 0 4px;}
+  #pdfTemplate .pdf-photos .pf{flex:1;}
+  #pdfTemplate .pdf-photos img{width:100%; height:150px; object-fit:cover; border-radius:8px; display:block;}
+  #pdfTemplate .pdf-photos .pc{font-size:10.5px; color:#8A8296; margin-top:4px; text-align:center;}
+
+  /* ---------- hero banner ---------- */
+  .hero-banner{
+    position:relative; border-radius:var(--radius-lg); overflow:hidden; margin:4px 0 22px;
+    box-shadow:var(--shadow-pop); background-size:cover; background-position:center;
+    aspect-ratio:2.6/1; display:flex; align-items:flex-end;
+  }
+  .hero-banner.hero-brand{
+    background:linear-gradient(120deg, var(--cmnh-blue) 0%, var(--cmnh-blue-deep) 100%);
+    align-items:center; justify-content:center;
+  }
+  .hero-banner.hero-brand .hero-banner-content{align-items:center; justify-content:center; text-align:center; flex-direction:column; gap:10px;}
+  .hero-brand-logo{width:64px; height:64px; border-radius:50%; background:#fff; padding:6px; box-shadow:0 4px 14px rgba(0,0,0,.25);}
+  .hero-banner::before{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(0deg, rgba(24,14,36,.82) 0%, rgba(24,14,36,.38) 42%, rgba(24,14,36,.02) 72%),
+               linear-gradient(100deg, rgba(18,138,150,.32) 0%, transparent 45%);
+  }
+  .hero-banner-content{position:relative; z-index:1; padding:22px 26px 22px; width:100%; display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+  .hero-eyebrow{font-family:'IBM Plex Mono'; font-size:10.5px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.72); font-weight:600;}
+  .hero-title{font-family:'Yellowtail',cursive; font-size:clamp(32px,6vw,46px); color:#fff; line-height:1; margin-top:4px; text-shadow:0 2px 10px rgba(0,0,0,.35);}
+  .hero-sub{font-size:13px; color:rgba(255,255,255,.88); margin-top:6px; max-width:420px; line-height:1.5;}
+  .hero-badges{display:flex; gap:8px; flex-wrap:wrap;}
+  .hero-badge{
+    background:rgba(255,255,255,.14); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.28);
+    color:#fff; font-size:11.5px; font-weight:700; padding:7px 13px; border-radius:999px; display:inline-flex; align-items:center; gap:6px;
+  }
+  .hero-badge .hb-dot{width:7px; height:7px; border-radius:50%; flex-shrink:0;}
+  @media (max-width:560px){
+    .hero-banner{aspect-ratio:3/2.1;}
+    .hero-banner-content{flex-direction:column; align-items:flex-start;}
+  }
+
+  /* ---------- bottom nav (mobile) ---------- */
+  .bottom-nav{display:none;}
+  @media (max-width:640px){
+    .bottom-nav{
+      display:flex; position:fixed; left:12px; right:12px; bottom:12px; z-index:60;
+      background:var(--surface); border-radius:20px; box-shadow:var(--shadow-pop);
+      padding:6px; gap:2px; border:1px solid var(--line);
+      padding-bottom:calc(6px + env(safe-area-inset-bottom));
+    }
+    .bn-btn{
+      flex:1; display:flex; flex-direction:column; align-items:center; gap:2px;
+      border:none; background:transparent; padding:8px 4px 7px; border-radius:15px;
+      color:var(--ink-faint); font-size:10.5px; font-weight:700; cursor:pointer;
+    }
+    .bn-btn.active{color:var(--purple-deep); background:var(--purple-soft);}
+    .topbar .tabs{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar" id="topbar">
+  <div class="brand">
+    <div class="brand-mark">
+      <img id="brandLogo" src="" alt="logo">
+    </div>
+    <div class="brand-text">
+      <span class="brand-name" id="brandName">Tranquila</span>
+      <span class="brand-sub" id="brandSub">ELDERLY CARE · แคตตาล็อกบริการ</span>
+    </div>
+    <button class="switch-company-link" id="switchCompanyLink" title="เปลี่ยนบริษัท">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-3.5-7.1M21 4v6h-6"/></svg>
+    </button>
+  </div>
+  <div class="tabs" id="tabsRow">
+    <button class="tab-btn active" data-view="catalog">แคตตาล็อก</button>
+    <button class="tab-btn" data-view="history">ประวัติการขาย</button>
+    <button class="tab-btn" data-view="settings">ตั้งค่า</button>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- ===================== LANDING (choose company) ===================== -->
+  <div class="view active" id="view-landing">
+    <div class="landing-head">
+      <div class="landing-eyebrow">Chiang Mai Nursing Home Care</div>
+      <div class="landing-title">เลือกบริษัทที่ต้องการใช้งาน</div>
+      <div class="landing-sub">แตะการ์ดเพื่อเข้าดูแคตตาล็อกและสร้างใบเสนอราคา</div>
+    </div>
+    <div class="landing-grid" id="landingGrid"></div>
+  </div>
+
+  <!-- ===================== CATALOG ===================== -->
+  <div class="view" id="view-catalog">
+    <div class="hero-banner" id="heroBanner"></div>
+    <div class="recent-row" id="recentRow"></div>
+    <div class="section-head">
+      <div class="section-eyebrow">เลือกให้ตรงกับผู้สูงอายุที่มาเยี่ยมชม</div>
+      <div class="section-title">กลุ่มผู้รับบริการ</div>
+    </div>
+    <div class="chip-row" id="groupChips"></div>
+
+    <div id="zoneSection">
+      <div class="section-head" style="margin-top:6px;">
+        <div class="section-eyebrow">โซนที่พัก</div>
+      </div>
+      <div class="chip-row" id="zoneChips"></div>
+    </div>
+
+    <div class="section-head">
+      <div class="section-title" id="pkgCount"></div>
+    </div>
+    <div class="pkg-grid" id="pkgGrid"></div>
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="em-title">ไม่พบแพ็กเกจที่ตรงกับตัวกรอง</div>
+      <div>ลองเลือก "ทั้งหมด" อีกครั้ง</div>
+    </div>
+  </div>
+
+  <!-- ===================== HISTORY ===================== -->
+  <div class="view" id="view-history">
+    <div class="section-head">
+      <div class="section-eyebrow" id="histEyebrow">Google Sheet Log</div>
+      <div class="section-title" id="histTitle">ประวัติการเสนอราคา</div>
+    </div>
+    <div class="field hist-search">
+      <input type="text" id="histSearch" placeholder="ค้นหาชื่อลูกค้า / เจ้าหน้าที่ / ห้อง">
+    </div>
+    <div id="histList"></div>
+    <div class="empty-state" id="histEmpty" style="display:none;"></div>
+  </div>
+
+  <!-- ===================== SETTINGS ===================== -->
+  <div class="view" id="view-settings">
+    <div class="section-head">
+      <div class="section-eyebrow">การเชื่อมต่อ</div>
+      <div class="section-title">ตั้งค่าระบบ</div>
+    </div>
+
+    <div class="settings-card">
+      <h3>ชื่อเจ้าหน้าที่ (ค่าเริ่มต้น)</h3>
+      <p>ใช้ร่วมกันทั้งสองบริษัท จะถูกใส่ในใบเสนอราคาโดยอัตโนมัติ แก้ไขได้ทุกครั้งตอนสร้างใบเสนอราคา</p>
+      <div class="field"><input type="text" id="staffNameInput" placeholder="เช่น พยาบาลสมหญิง"></div>
+      <button class="btn btn-secondary" id="saveStaffBtn">บันทึกชื่อเจ้าหน้าที่</button>
+    </div>
+
+    <div id="sheetSettingsContainer"></div>
+
+    <div class="settings-card">
+      <h3>วิธีตั้งค่า Google Sheet (ทำครั้งเดียวต่อบริษัท)</h3>
+      <p>ไฟล์ <code style="font-family:'IBM Plex Mono'; background:var(--paper-dim); padding:1px 6px; border-radius:6px;">Code.gs</code> ที่แนบมาให้คือโค้ดสำหรับขั้นตอนที่ 3 ด้านล่าง — ใช้ไฟล์เดียวกันได้กับทั้ง Tranquila และ CMNH แค่สร้าง Google Sheet แยกกันคนละแผ่นแล้ว deploy แยกกัน 2 รอบ</p>
+      <ol class="steps-list">
+        <li>สร้าง Google Sheet ใหม่ (ตั้งชื่อว่าอะไรก็ได้ เช่น "Tranquila Log" หรือ "CMNH Log")</li>
+        <li>เมนู <code>ส่วนขยาย (Extensions)</code> → <code>Apps Script</code></li>
+        <li>ลบโค้ดเดิมทั้งหมด แล้ววางโค้ดจากไฟล์ <code>Code.gs</code> แทน</li>
+        <li>กด <code>Deploy</code> → <code>New deployment</code> → เลือกประเภท <code>Web app</code></li>
+        <li>Execute as: <code>Me</code> · Who has access: <code>Anyone</code></li>
+        <li>กด <code>Deploy</code> แล้วคัดลอก URL มาวางในช่องของบริษัทนั้นด้านบน กด "บันทึก URL"</li>
+      </ol>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== DETAIL MODAL ===================== -->
+<div class="modal-backdrop" id="detailBackdrop">
+  <div class="modal-sheet" id="detailSheet"></div>
+</div>
+
+<!-- ===================== ROOM PICKER MODAL ===================== -->
+<div class="modal-backdrop" id="roomBackdrop">
+  <div class="modal-sheet" id="roomSheet"></div>
+</div>
+
+<!-- ===================== QUOTE MODAL ===================== -->
+<div class="modal-backdrop" id="quoteBackdrop">
+  <div class="modal-sheet" id="quoteSheet"></div>
+</div>
+
+<!-- ===================== HIST DETAIL MODAL ===================== -->
+<div class="modal-backdrop" id="histBackdrop">
+  <div class="modal-sheet" id="histSheet"></div>
+</div>
+
+<div id="toastHost"></div>
+
+<!-- offscreen PDF template, filled dynamically -->
+<div id="pdfTemplate"></div>
+
+<div class="bottom-nav">
+  <button class="bn-btn active" data-view="catalog">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    แคตตาล็อก
+  </button>
+  <button class="bn-btn" data-view="history">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-7 3L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/></svg>
+    ประวัติ
+  </button>
+  <button class="bn-btn" data-view="settings">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    ตั้งค่า
+  </button>
+</div>
+
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+const GROUPS = {
+  general: { name:'ผู้สูงอายุทั่วไป', icon:'👤', desc:'กลุ่มผู้สูงอายุทั่วไป มีโรคประจำตัว หรือมีภาวะหลงลืม รับประทานอาหารปกติ–อ่อน–กึ่งติดเตียง/เดินได้ หรือมีผู้ช่วยประคอง' },
+  rehab:   { name:'กายภาพฟื้นฟู', icon:'🏃', desc:'เน้นกายภาพฟื้นฟู หลังอุบัติเหตุ, โรคหลอดเลือดสมอง, พาร์กินสัน ฯลฯ' },
+  ngfeed:  { name:'ผู้ป่วย NG Feed', icon:'💧', desc:'รับอาหารทางสายยาง (NG Feeding) ร่วมกับกายภาพฟื้นฟู ภาวะติดเตียง–กึ่งติดเตียง มีปัญหาการกลืน' },
+  ngtube:  { name:'NG Tube / Oxygen', icon:'🫁', desc:'ให้อาหารทางสายยาง–เจาะคอ–ให้ออกซิเจน ร่วมกับกายภาพฟื้นฟู หลังผ่าตัดสมอง, โรคหลอดเลือดสมอง, พาร์กินสัน, มะเร็ง, ฟอกไต ฯลฯ' }
+};
+const ZONES = {
+  villa:   { name:'โซน Villa', desc:'บ้านเดี่ยวสไตล์วิลล่า บรรยากาศร่มรื่น', cls:'zone-villa' },
+  private: { name:'โซน Private', desc:'อาคารส่วนตัว เป็นสัดส่วน', cls:'zone-private' }
+};
+const SERVICES = {
+  standard:{
+    left:['แพทย์เฉพาะทางลงตรวจทุก 2 สัปดาห์','พยาบาลวิชาชีพประจำศูนย์','เจ้าหน้าที่ดูแลตลอด 24 ชม.','อาหาร + ผลไม้ + ของว่าง = 3 มื้อ/วัน','เช้า: กายภาพขั้นพื้นฐานด้วยกายอุปกรณ์','บ่าย: กิจกรรมบำบัด อาทิ ทำขนม, ฝึกกล้ามเนื้อมัดเล็ก','กิจกรรมกลุ่ม และสวดมนต์ก่อนนอน'],
+    right:['ทำความสะอาดชุด (ส่งซักอบโอโซนฆ่าเชื้อ)','นวดน้ำมันอโรม่า ทุกวันพุธ','แช่เท้าน้ำอุ่น ทุกวันเสาร์','ประคบสมุนไพร ทุกวันอาทิตย์','ตัดเล็บ/ตัดผม/โกนหนวด ทุกวันอาทิตย์','ใส่บาตรทุกวันพระ','กิจกรรมพิเศษวันสำคัญประจำปี']
+  },
+  critical:{
+    left:['แพทย์เฉพาะทางลงตรวจทุก 2 สัปดาห์','พยาบาลวิชาชีพประจำศูนย์','เจ้าหน้าที่ดูแลตลอด 24 ชม. (เปลี่ยนเวรทุก 8 ชม.)','อาหารเหลวปั่นสดโดยนักโภชนาการ = 5 มื้อ/วัน','กายภาพบำบัด, นวดกระตุ้นใบหน้า, นวดกระเพาะปัสสาวะ','กิจกรรมบำบัด เน้นฝึกกล้ามเนื้อมัดเล็กและการทรงตัว','ขึ้นเครื่องปรับองศาเพื่อฝึกยืน, Space Walker ฯลฯ'],
+    right:['การฝึกเดินขึ้นทางลาด, การขึ้น-ลงบันได','ทำความสะอาดชุด (ส่งซักอบโอโซนฆ่าเชื้อ)','นวดน้ำมันอโรม่า ทุกวันพุธ','แช่เท้าน้ำอุ่น ทุกวันเสาร์','ประคบสมุนไพร ทุกวันอาทิตย์','ตัดเล็บ/ตัดผม/โกนหนวด ทุกวันอาทิตย์','ใส่บาตรทุกวันพระ / กิจกรรมพิเศษประจำปี']
+  }
+};
+const EXCLUDED = [
+  'รถพยาบาลพาพบแพทย์ตามนัด + เจ้าหน้าที่ ครั้งละ 1,500 บาท (ไป-กลับ)',
+  'รถพยาบาล Emergency ครั้งละ 1,700 บาท (พร้อมเจ้าหน้าที่และอุปกรณ์)',
+  'ค่าบริการเจ้าหน้าที่พบแพทย์ตามนัดหรือรับยาแทน ครั้งละ 600 บาท',
+  'แพมเพิสยี่ห้อเซอเทนตี้ (M,L) ห่อละ 400 บาท · แผ่นรองห่อละ 120 บาท',
+  'นักกายภาพบำบัดวิชาชีพ ครั้งละ 700 บาท (ประกบ 1:1)',
+  'นักกิจกรรมบำบัด ครั้งละ 700 บาท (ประกบ 1:1)',
+  'ฝังเข็มปรับสมดุลร่างกายโดยแพทย์เฉพาะทาง ครั้งละ 450 บาท',
+  'Oxygen (ไฟฟ้า) 120 บาท/วัน · Oxygen (ถังเขียว 6 คิว) 500 บาท/ถัง',
+  'ค่าบริการทำแผลกดทับ เริ่มต้นที่ 70 บาท/ครั้ง',
+  'เปลี่ยนสายสวนปัสสาวะ 400 บาท/ชุด · เปลี่ยนสาย NG Feed 150 บาท/ชุด',
+  'ของใช้ส่วนตัว (ครีมอาบน้ำ, แชมพู, โลชั่น ฯลฯ) ราคาปกติไม่บวกเพิ่ม',
+  'แถบตรวจน้ำตาลปลายนิ้ว 50 บาท/ครั้ง · สายดูดเสมหะ 7 บาท/เส้น'
+];
+const ESCORT_NOTE = 'กรณีต้องมีเจ้าหน้าที่ดูแลประกบตลอด 24 ชม. (เวรเช้า 1 / เวรดึก 1) = 39,000 บาท/เดือน';
+const NOTES = [
+  'กรณีเลือกรับบริการและอยู่ครบตั้งแต่ 1 เดือนขึ้นไป มีรถพยาบาลรับที่โรงพยาบาล ฟรี 1 ครั้ง (เฉพาะ รพ. ในเขต อ.เมืองเชียงใหม่, รพ.สันทราย, นครพิงค์, รพ.กรุงเทพเชียงใหม่ ฯลฯ)',
+  'พยาบาลวิชาชีพประจำศูนย์รับรายละเอียดอาการโดยตรงกับโรงพยาบาล เพื่อการดูแล-ฟื้นฟูที่ต่อเนื่อง'
+];
+const LOGO_DATA_URI = 'images/logo.jpg';
+
+const HERO_BANNER_URI = 'images/hero-banner.jpg';
+
+const PRIVATE_VILLA_ROOM_CHOICES = [
+  { id:'vip1', name:'VIP 1', deltaDay:0, deltaMonth:0, images:[] },
+  { id:'vip2', name:'VIP 2', deltaDay:0, deltaMonth:0, images:[] },
+  { id:'vip3', name:'VIP 3', deltaDay:0, deltaMonth:0, images:[] },
+  { id:'vip4', name:'VIP 4', deltaDay:0, deltaMonth:0, images:[] },
+  { id:'vip5', name:'VIP 5', deltaDay:0, deltaMonth:0, images:[] },
+  { id:'vip6', name:'VIP 6', deltaDay:0, deltaMonth:0, images:[] }
+];
+const PRIVATE_ROOM_ROOM_CHOICES = [
+  { id:'vip7',  name:'VIP 7',  deltaDay:0,    deltaMonth:0,    images:[] },
+  { id:'vip8',  name:'VIP 8',  deltaDay:0,    deltaMonth:0,    images:[] },
+  { id:'vip9',  name:'VIP 9',  deltaDay:300,  deltaMonth:5000, images:[] },
+  { id:'vip10', name:'VIP 10', deltaDay:300,  deltaMonth:5000, images:[] }
+];
+
+const VILLA_ROOM_CHOICES = [
+  { id:'r4', name:'ห้องรวม 4 เตียง', daycare:false, images:[ 'images/room4-a.jpg', 'images/room4-b.jpg' ] },
+  { id:'r6', name:'ห้องรวม 6 เตียง', daycare:false, images:[ 'images/room6-a.jpg', 'images/room6-b.jpg' ] },
+  { id:'r7in', name:'ห้องรวม 7 เตียง (อาคารใน)', daycare:false, images:[ 'images/room7in-a.jpg' ] },
+  { id:'r7out', name:'ห้องรวม 7 เตียง (อาคารนอก)', daycare:false, images:[ 'images/room7out-a.jpg' ] },
+  { id:'daycare5', name:'ห้องรวม 5 เตียง (Day Care)', daycare:true, images:[ 'images/daycare5-a.jpg' ] }
+];
+
+const ROOM_IMAGES = {
+  'Private Villa': [
+    { src:'images/pv-exterior.jpg', caption:'ภายนอกบ้าน Private Villa' },
+    { src:'images/pv-living.jpg', caption:'ห้องนั่งเล่นส่วนตัว' },
+    { src:'images/pv-jacuzzi.jpg', caption:'อ่างจากุซซี่ในห้อง' },
+    { src:'images/pv-room2.jpg', caption:'ห้องนอนใหญ่' },
+    { src:'images/pv-bathroom.jpg', caption:'ห้องน้ำในตัว' }
+  ]
+};
+const PACKAGES = [
+  { id:'v-general',    zone:'villa',    group:'general', room:'บ้าน Villa โซนรวม', priceDay:1200, priceMonth:35000, escort:false, svc:'standard', roomChoices:VILLA_ROOM_CHOICES },
+  { id:'v-rehab',      zone:'villa',    group:'rehab',   room:'บ้าน Villa โซนรวม', priceDay:1200, priceMonth:35000, escort:false, svc:'standard', roomChoices:VILLA_ROOM_CHOICES },
+  { id:'v-ngfeed',     zone:'villa',    group:'ngfeed',  room:'บ้าน Villa โซนรวม', priceDay:1500, priceMonth:42000, escort:false, svc:'critical', roomChoices:VILLA_ROOM_CHOICES },
+  { id:'v-ngtube',     zone:'villa',    group:'ngtube',  room:'บ้าน Villa โซนรวม', priceDay:1700, priceMonth:45000, escort:false, svc:'critical', roomChoices:VILLA_ROOM_CHOICES },
+  { id:'v-general-pv', zone:'villa',    group:'general', room:'Private Villa',     priceDay:1800, priceMonth:52000, escort:true,  svc:'standard', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
+  { id:'v-rehab-pv',   zone:'villa',    group:'rehab',   room:'Private Villa',     priceDay:1800, priceMonth:52000, escort:true,  svc:'standard', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
+  { id:'v-ngfeed-pv',  zone:'villa',    group:'ngfeed',  room:'Private Villa',     priceDay:2200, priceMonth:62000, escort:true,  svc:'critical', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
+  { id:'v-ngtube-pv',  zone:'villa',    group:'ngtube',  room:'Private Villa',     priceDay:2500, priceMonth:67000, escort:true,  svc:'critical', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
+  { id:'p-general-pr', zone:'private',  group:'general', room:'Private Room',      priceDay:1600, priceMonth:45000, escort:true,  svc:'standard', roomChoices:PRIVATE_ROOM_ROOM_CHOICES },
+  { id:'p-rehab-pr',   zone:'private',  group:'rehab',   room:'Private Room',      priceDay:1600, priceMonth:45000, escort:true,  svc:'standard', roomChoices:PRIVATE_ROOM_ROOM_CHOICES },
+  { id:'p-ngfeed-pv',  zone:'private',  group:'ngfeed',  room:'Private Villa',     priceDay:1900, priceMonth:53000, escort:true,  svc:'critical' },
+  { id:'p-ngtube-pr',  zone:'private',  group:'ngtube',  room:'Private Room',      priceDay:2200, priceMonth:58000, escort:true,  svc:'critical', roomChoices:PRIVATE_ROOM_ROOM_CHOICES }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const CMNH_LOGO_URI = 'images/cmnh-logo.jpg';
+const CMNH_HERO_URI = 'images/cmnh/hero-cmnh.jpg';
+
+const CMNH_ROOM_IMAGES = {
+  'ศูนย์ดูแล NG Tube/Oxygen (สาขา 1)': [
+    { src:'images/cmnh/b1-room-a.jpg', caption:'ห้องพักผู้ป่วย NG Tube แบบ 2 เตียง มีผนังกั้น' },
+    { src:'images/cmnh/b1-room-b.jpg', caption:'ห้องพักผู้ป่วย NG Tube แบบ 3 เตียง มีผนังกั้น' },
+    { src:'images/cmnh/b1-staff.jpg', caption:'พยาบาลวิชาชีพประจำศูนย์ ดูแลใกล้ชิด' }
+  ],
+  'ศูนย์ดูแล NG Feed (สาขา 2)': [
+    { src:'images/cmnh/b2-hall.jpg', caption:'ทางเดินภายในศูนย์ดูแล NG Feed' },
+    { src:'images/cmnh/b2-room.jpg', caption:'ห้องพักผู้ป่วย NG Feed แบบ 2 เตียง' }
+  ],
+  'ศูนย์กายภาพฟื้นฟู (สาขา 3)': [
+    { src:'images/cmnh/b3-gym-a.jpg', caption:'ห้องกายภาพบำบัด พร้อมอุปกรณ์ฟื้นฟู' },
+    { src:'images/cmnh/b3-gym-b.jpg', caption:'ห้องกายภาพบำบัด พร้อมราวฝึกเดิน' },
+    { src:'images/cmnh/b3-room-a.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู แบบ 1 เตียง' },
+    { src:'images/cmnh/b3-room-b.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู แบบ 1 เตียง (ผนังไม้)' },
+    { src:'images/cmnh/b3-room-c.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู พร้อมมุมนั่งเล่น' },
+    { src:'images/cmnh/b3-room-d.jpg', caption:'ห้องพักผู้ป่วยกายภาพฟื้นฟู พร้อมรถเข็นอุปกรณ์' }
+  ],
+  'บ้านพักผู้สูงอายุทั่วไป (สาขา 4)': [
+    { src:'images/cmnh/b4-room-2bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 2 เตียง' },
+    { src:'images/cmnh/b4-room-1bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 1 เตียง' },
+    { src:'images/cmnh/b4-room-3bed.jpg', caption:'ห้องพักผู้สูงอายุ แบบ 3 เตียง' },
+    { src:'images/cmnh/b4-lawn.jpg', caption:'สนามหญ้าและระเบียงพักผ่อนหน้าบ้าน' },
+    { src:'images/cmnh/b4-living.jpg', caption:'มุมห้องนั่งเล่นส่วนกลาง' },
+    { src:'images/cmnh/b4-patio.jpg', caption:'ระเบียงนั่งเล่นด้านนอก' }
+  ]
+};
+Object.assign(ROOM_IMAGES, CMNH_ROOM_IMAGES);
+
+const CMNH_ZONES = {
+  main: { name:'CMNH', desc:'เชียงใหม่เนิร์สซิ่งโฮมแคร์', cls:'zone-cmnh' }
+};
+const CMNH_ROOM_CHOICES = [
+  { id:'zone',           name:'ห้องรวม (โซนรวม)',     deltaDay:0,   deltaMonth:0,    images:[] },
+  { id:'special-double', name:'ห้องพิเศษ (คู่)',       deltaDay:200, deltaMonth:2500, images:[] },
+  { id:'special-single', name:'ห้องพิเศษ (เดี่ยว)',    deltaDay:200, deltaMonth:5000, images:[] }
+];
+const CMNH_PACKAGES = [
+  { id:'c-general', zone:'main', group:'general', room:'บ้านพักผู้สูงอายุทั่วไป (สาขา 4)', priceDay:1000, priceMonth:25000, escort:false, svc:'standard', roomChoices:CMNH_ROOM_CHOICES },
+  { id:'c-rehab',   zone:'main', group:'rehab',   room:'ศูนย์กายภาพฟื้นฟู (สาขา 3)', priceDay:1000, priceMonth:25000, escort:false, svc:'standard', roomChoices:CMNH_ROOM_CHOICES },
+  { id:'c-ngfeed',  zone:'main', group:'ngfeed',  room:'ศูนย์ดูแล NG Feed (สาขา 2)', priceDay:1200, priceMonth:30000, escort:false, svc:'critical', roomChoices:CMNH_ROOM_CHOICES },
+  { id:'c-ngtube',  zone:'main', group:'ngtube',  room:'ศูนย์ดูแล NG Tube/Oxygen (สาขา 1)', priceDay:1800, priceMonth:35000, escort:false, svc:'critical', roomChoices:CMNH_ROOM_CHOICES }
+];
+
+const COMPANIES = {
+  tranquila: {
+    key:'tranquila', name:'Tranquila', fullName:'Tranquila Elderly Care',
+    tagline:'กายภาพ–ฟื้นฟู–ดูแล ด้านระบบประสาทและสมอง',
+    logo: LOGO_DATA_URI, heroType:'photo', heroSrc: HERO_BANNER_URI,
+    zones: ZONES, packages: PACKAGES, hasZones: true
+  },
+  cmnh: {
+    key:'cmnh', name:'CMNH', fullName:'Chiangmai Nursing Homecare',
+    tagline:'กายภาพ–ฟื้นฟู–ดูแล ด้านระบบประสาทและสมอง',
+    logo: CMNH_LOGO_URI, heroType:'photo', heroSrc: CMNH_HERO_URI,
+    zones: CMNH_ZONES, packages: CMNH_PACKAGES, hasZones: false
+  }
+};
+function currentCompany(){ return COMPANIES[state.company]; }
+
+const state = { company: localStorage.getItem('active_company') || 'tranquila', groupFilter:'all', zoneFilter:'all', history:[], quotePkg:null, roomChoice:null, effDay:null, effMonth:null, qty:1, durationType:'day', escortOn:false };
+
+/* ---------- company-scoped localStorage key helpers (with migration from old single-company keys) ---------- */
+function sheetUrlKey(companyKey){ return 'sheet_url_' + companyKey; }
+function localLogKey(companyKey){ return 'local_log_' + companyKey; }
+function historyCacheKey(companyKey){ return 'history_cache_' + companyKey; }
+function recentKey(companyKey){ return 'recent_pkgs_' + companyKey; }
+(function migrateOldKeys(){
+  const map = [
+    ['tranquila_sheet_url', sheetUrlKey('tranquila')],
+    ['tranquila_local_log', localLogKey('tranquila')],
+    ['tranquila_history_cache', historyCacheKey('tranquila')],
+    ['tranquila_recent_pkgs', recentKey('tranquila')],
+    ['tranquila_staff_name', 'staff_name']
+  ];
+  map.forEach(([oldKey, newKey]) => {
+    if(localStorage.getItem(oldKey) != null && localStorage.getItem(newKey) == null){
+      localStorage.setItem(newKey, localStorage.getItem(oldKey));
+    }
+  });
+})();
+
+const fmt = n => Number(n).toLocaleString('th-TH');
+const $ = sel => document.querySelector(sel);
+const $all = sel => document.querySelectorAll(sel);
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+function toast(msg, type){
+  const host = $('#toastHost');
+  const el = document.createElement('div');
+  el.className = 'toast' + (type ? ' ' + type : '');
+  el.textContent = msg;
+  host.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity .25s'; setTimeout(()=>el.remove(), 260); }, 2600);
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+function switchView(view){
+  $all('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
+  $all('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  $all('.bn-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  if(view === 'history') loadHistory();
+}
+$all('.tab-btn, .bn-btn').forEach(btn => btn.addEventListener('click', () => switchView(btn.dataset.view)));
+
+/* ============================================================
+   RECENT / QUICK-ACCESS SHORTCUTS
+   ============================================================ */
+function getRecentIds(){
+  try{ return JSON.parse(localStorage.getItem(recentKey(state.company)) || '[]'); }catch(e){ return []; }
+}
+function recordRecentPkg(id){
+  let ids = getRecentIds().filter(x => x !== id);
+  ids.unshift(id);
+  ids = ids.slice(0, 6);
+  localStorage.setItem(recentKey(state.company), JSON.stringify(ids));
+  renderRecent();
+}
+function renderRecent(){
+  const row = $('#recentRow'); if(!row) return;
+  const cc = currentCompany();
+  const ids = getRecentIds();
+  const pkgs = ids.map(findPkg).filter(Boolean);
+  if(!pkgs.length){ row.innerHTML = ''; row.style.display = 'none'; return; }
+  row.style.display = 'flex';
+  row.innerHTML = pkgs.map(p => {
+    const z = cc.zones[p.zone], g = GROUPS[p.group];
+    const dotColor = p.zone==='villa' ? 'var(--teal)' : (p.zone==='private' ? 'var(--purple)' : 'var(--cmnh-blue)');
+    return '<div class="recent-chip" data-id="' + p.id + '"><span class="rc-dot" style="background:' + dotColor + '"></span><div class="rc-txt"><div class="rc-name">' + p.room + ' · ' + g.name + '</div><div class="rc-price">฿' + fmt(p.priceDay) + '/วัน</div></div></div>';
+  }).join('');
+  row.querySelectorAll('.recent-chip').forEach(chip => chip.addEventListener('click', () => openQuote(chip.dataset.id)));
+}
+
+/* ============================================================
+   CATALOG — CHIPS
+   ============================================================ */
+function renderChips(){
+  const cc = currentCompany();
+  const groupChips = $('#groupChips');
+  const chipsHtml = ['<button class="filter-chip' + (state.groupFilter==='all'?' active':'') + '" data-group="all">ทั้งหมด</button>']
+    .concat(Object.entries(GROUPS).map(([key,g]) =>
+      '<button class="filter-chip' + (state.groupFilter===key?' active':'') + '" data-group="' + key + '">' + g.icon + ' ' + g.name + '</button>'
+    ));
+  groupChips.innerHTML = chipsHtml.join('');
+  groupChips.querySelectorAll('.filter-chip').forEach(chip => chip.addEventListener('click', () => {
+    state.groupFilter = chip.dataset.group; renderChips(); renderGrid();
+  }));
+
+  const zoneSection = $('#zoneSection');
+  if(!cc.hasZones){
+    zoneSection.style.display = 'none';
+    state.zoneFilter = 'all';
+    return;
+  }
+  zoneSection.style.display = '';
+  const zoneChips = $('#zoneChips');
+  const zoneHtml = ['<button class="filter-chip' + (state.zoneFilter==='all'?' active':'') + '" data-zone="all">ทั้งหมด</button>']
+    .concat(Object.entries(cc.zones).map(([key,z]) =>
+      '<button class="filter-chip ' + z.cls + (state.zoneFilter===key?' active':'') + '" data-zone="' + key + '"><span class="dot" style="background:' + (key==='villa'?'var(--teal)':(key==='private'?'var(--purple)':'var(--cmnh-blue)')) + '"></span>' + z.name + '</button>'
+    ));
+  zoneChips.innerHTML = zoneHtml.join('');
+  zoneChips.querySelectorAll('.filter-chip').forEach(chip => chip.addEventListener('click', () => {
+    state.zoneFilter = chip.dataset.zone; renderChips(); renderGrid();
+  }));
+}
+
+/* ============================================================
+   CATALOG — GRID
+   ============================================================ */
+function zoneIconSvg(zoneKey){
+  if(zoneKey === 'villa'){
+    return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>';
+  }
+  if(zoneKey === 'main'){
+    return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>';
+  }
+  return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg>';
+}
+
+function renderGrid(){
+  const cc = currentCompany();
+  const list = cc.packages.filter(p =>
+    (state.groupFilter==='all' || p.group===state.groupFilter) &&
+    (state.zoneFilter==='all' || p.zone===state.zoneFilter)
+  );
+  $('#pkgCount').textContent = 'พบ ' + list.length + ' แพ็กเกจ';
+  const grid = $('#pkgGrid');
+  $('#emptyState').style.display = list.length ? 'none' : 'block';
+  grid.innerHTML = list.map(p => {
+    const g = GROUPS[p.group], z = cc.zones[p.zone];
+    const photos = ROOM_IMAGES[p.room];
+    const bandHtml = photos && photos.length
+      ? '<div class="band band-photo" style="background-image:url(\'' + photos[0].src + '\')"><div class="band-photo-overlay"></div><div class="band-text photo"><div class="band-zone">' + z.name + '</div><div class="band-room">' + p.room + '</div></div></div>'
+      : '<div class="band"><div class="band-icon">' + zoneIconSvg(p.zone) + '</div><div class="band-text"><div class="band-zone">' + z.name + '</div><div class="band-room">' + p.room + '</div></div></div>';
+    return '<div class="pkg-card ' + z.cls + '" data-id="' + p.id + '">' +
+      '<div class="ribbon">฿' + fmt(p.priceDay) + '/วัน</div>' +
+      bandHtml +
+      '<div class="body-pad">' +
+        '<span class="group-tag">' + g.icon + ' ' + g.name + '</span>' +
+        '<div class="price-line"><span class="price-day">฿' + fmt(p.priceDay) + '</span><span class="price-day-unit">/ วัน</span></div>' +
+        '<div class="price-month">หรือ ฿' + fmt(p.priceMonth) + ' / เดือน</div>' +
+        '<div class="cta-row">' +
+          '<button class="btn-mini" data-action="detail" data-id="' + p.id + '">รายละเอียด</button>' +
+          '<button class="btn-mini primary" data-action="quote" data-id="' + p.id + '">เลือกแพ็กเกจ</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  grid.querySelectorAll('.pkg-card').forEach(card => card.addEventListener('click', (e) => {
+    if(e.target.closest('[data-action]')) return;
+    openDetail(card.dataset.id);
+  }));
+  grid.querySelectorAll('[data-action="detail"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); openDetail(btn.dataset.id); }));
+  grid.querySelectorAll('[data-action="quote"]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); chooseOrQuote(btn.dataset.id); }));
+}
+
+function chooseOrQuote(id){
+  openQuote(id);
+}
+
+/* ============================================================
+   DETAIL MODAL
+   ============================================================ */
+function findPkg(id){ return currentCompany().packages.find(p => p.id === id); }
+
+function galleryHtml(roomName){
+  const photos = ROOM_IMAGES[roomName];
+  if(!photos || !photos.length) return '';
+  return '<div class="gallery-scroll">' + photos.map(ph =>
+    '<div class="gallery-item"><img src="' + ph.src + '" alt="' + esc(ph.caption) + '" loading="lazy"><div class="cap">' + esc(ph.caption) + '</div></div>'
+  ).join('') + '</div>';
+}
+
+function openDetail(id){
+  const p = findPkg(id); if(!p) return;
+  const g = GROUPS[p.group], z = currentCompany().zones[p.zone], svc = SERVICES[p.svc];
+  const excl = EXCLUDED.slice();
+  const half = Math.ceil(excl.length/2);
+  const exclLeft = excl.slice(0, half), exclRight = excl.slice(half);
+  if(p.escort) exclRight.push(ESCORT_NOTE);
+  const roomPreview = (p.roomChoices && p.roomChoices.length)
+    ? '<div class="svc-block-title">ห้องพักจริงให้เลือก (' + p.roomChoices.length + ' ห้อง)</div><div class="mini-thumb-row">' + p.roomChoices.map(r => r.images && r.images.length
+        ? '<img src="' + r.images[0] + '" alt="' + esc(r.name) + '" title="' + esc(r.name) + '">'
+        : '<div class="thumb-fallback" title="' + esc(r.name) + '">' + esc(r.name) + '</div>'
+      ).join('') + '</div>'
+    : '';
+
+  $('#detailSheet').innerHTML =
+    '<div class="modal-head">' +
+      '<div><div class="htxt">' + p.room + '</div><div class="hsub">' + z.name + ' · ' + g.icon + ' ' + g.name + '</div></div>' +
+      '<button class="icon-btn" id="closeDetail">✕</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
+      galleryHtml(p.room) +
+      '<p style="font-size:13px;color:var(--ink-soft);margin-top:0;">' + g.desc + '</p>' +
+      '<div class="price-line"><span class="price-day">฿' + fmt(p.priceDay) + '</span><span class="price-day-unit">/ วัน</span></div>' +
+      '<div class="price-month">หรือ ฿' + fmt(p.priceMonth) + ' / เดือน</div>' +
+      roomPreview +
+      '<div class="svc-block-title">บริการที่ได้รับ</div>' +
+      '<div class="svc-grid"><ul>' + svc.left.map(t=>'<li>'+t+'</li>').join('') + '</ul><ul>' + svc.right.map(t=>'<li>'+t+'</li>').join('') + '</ul></div>' +
+      '<div class="svc-block-title excl">ค่าใช้จ่ายอื่น ๆ ที่ไม่รวมในค่าบริการ</div>' +
+      '<div class="svc-grid"><ul class="excl-list">' + exclLeft.map(t=>'<li>'+t+'</li>').join('') + '</ul><ul class="excl-list">' + exclRight.map(t=>'<li>'+t+'</li>').join('') + '</ul></div>' +
+      '<ul class="note-box">' + NOTES.map(t=>'<li>'+t+'</li>').join('') + '</ul>' +
+      '<div class="btn-row">' +
+        '<button class="btn btn-secondary" id="detailClose2">ปิด</button>' +
+        '<button class="btn btn-primary" id="detailChoose">เลือกแพ็กเกจนี้</button>' +
+      '</div>' +
+    '</div>';
+
+  $('#detailBackdrop').classList.add('show');
+  $('#closeDetail').addEventListener('click', closeDetail);
+  $('#detailClose2').addEventListener('click', closeDetail);
+  $('#detailChoose').addEventListener('click', () => { closeDetail(); chooseOrQuote(id); });
+}
+function closeDetail(){ $('#detailBackdrop').classList.remove('show'); }
+$('#detailBackdrop').addEventListener('click', (e) => { if(e.target.id==='detailBackdrop') closeDetail(); });
+
+/* ============================================================
+   ROOM PICKER MODAL (physical room within "บ้าน Villa โซนรวม")
+   ============================================================ */
+function openRoomPicker(pkgId){
+  const p = findPkg(pkgId); if(!p) return;
+  const choices = p.roomChoices || [];
+  $('#roomSheet').innerHTML =
+    '<div class="modal-head">' +
+      '<div><div class="htxt">เลือกห้องพักจริง</div><div class="hsub">' + p.room + ' · ' + GROUPS[p.group].name + '</div></div>' +
+      '<button class="icon-btn" id="closeRoomPicker">✕</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
+      '<div class="room-pick-grid">' + choices.map(r => {
+        const img = (r.images && r.images.length) ? '<img src="' + r.images[0] + '" alt="' + esc(r.name) + '">' : '<div class="rp-noimg">' + esc(r.name) + '</div>';
+        const priceNote = (r.deltaDay || r.deltaMonth) ? '<span class="rp-tag rp-tag-price">+฿' + fmt(r.deltaDay) + '/วัน</span>' : '';
+        return '<div class="room-pick-card" data-rid="' + r.id + '">' + img + '<div class="rp-body"><div class="rp-name">' + esc(r.name) + '</div>' + (r.daycare ? '<span class="rp-tag">รองรับ Day Care 12 ชม.</span>' : '') + priceNote + '</div></div>';
+      }).join('') + '</div>' +
+    '</div>';
+  $('#roomBackdrop').classList.add('show');
+  $('#closeRoomPicker').addEventListener('click', closeRoomPicker);
+  $('#roomSheet').querySelectorAll('.room-pick-card').forEach(card => card.addEventListener('click', () => {
+    const room = choices.find(r => r.id === card.dataset.rid);
+    closeRoomPicker();
+    openQuote(pkgId, room);
+  }));
+}
+function closeRoomPicker(){ $('#roomBackdrop').classList.remove('show'); }
+$('#roomBackdrop').addEventListener('click', (e) => { if(e.target.id==='roomBackdrop') closeRoomPicker(); });
+
+/* ============================================================
+   QUOTE MODAL (room selection is inline — one modal, fewer taps)
+   ============================================================ */
+function roomChipHtml(r, selected){
+  const thumb = (r.images && r.images.length) ? '<img src="' + r.images[0] + '" alt="' + esc(r.name) + '">' : '<div class="rsc-noimg">' + esc(r.name) + '</div>';
+  return '<div class="room-select-chip' + (selected ? ' selected' : '') + '" data-rid="' + r.id + '">' + thumb + '<div class="rsc-name">' + esc(r.name) + (r.daycare ? ' <span class="rsc-tag">Day Care</span>' : '') + (r.deltaDay || r.deltaMonth ? ' <span class="rsc-tag rsc-tag-price">+฿' + fmt(r.deltaDay) + '/วัน</span>' : '') + '</div></div>';
+}
+function buildDurationChipsHtml(effDay, effMonth, isDaycare, currentType){
+  return '<div class="radio-chip' + (currentType==='day'?' checked':'') + '" data-duration="day">รายวัน · ฿' + fmt(effDay) + '</div>' +
+    (isDaycare ? '<div class="radio-chip' + (currentType==='daycare12'?' checked':'') + '" data-duration="daycare12">Day Care 12 ชม. · ฿' + fmt(Math.round(effDay/2)) + '</div>' : '') +
+    '<div class="radio-chip' + (currentType==='month'?' checked':'') + '" data-duration="month">รายเดือน · ฿' + fmt(effMonth) + '</div>';
+}
+function refreshRoomDependentUI(){
+  const p = state.quotePkg; if(!p) return;
+  const isDaycare = !!(state.roomChoice && state.roomChoice.daycare);
+  const effDay = p.priceDay + (state.roomChoice ? (state.roomChoice.deltaDay||0) : 0);
+  const effMonth = p.priceMonth + (state.roomChoice ? (state.roomChoice.deltaMonth||0) : 0);
+  state.effDay = effDay; state.effMonth = effMonth;
+  if(state.durationType === 'daycare12' && !isDaycare) state.durationType = 'day';
+
+  const hsub = $('#quoteHsub');
+  if(hsub){ const g = GROUPS[p.group], z = currentCompany().zones[p.zone]; hsub.textContent = p.room + (state.roomChoice ? ' · ' + state.roomChoice.name : '') + ' · ' + z.name + ' · ' + g.name; }
+
+  const rowEl = $('#roomSelectRow');
+  if(rowEl && p.roomChoices){ rowEl.querySelectorAll('.room-select-chip').forEach(c => c.classList.toggle('selected', state.roomChoice && c.dataset.rid === state.roomChoice.id)); }
+
+  const wrap = $('#durationChipsWrap');
+  if(wrap) wrap.innerHTML = buildDurationChipsHtml(effDay, effMonth, isDaycare, state.durationType);
+  const ql = $('#qtyLabel');
+  if(ql) ql.textContent = state.durationType === 'month' ? 'จำนวนเดือน' : (state.durationType === 'daycare12' ? 'จำนวนครั้ง (12 ชม.)' : 'จำนวนวัน');
+  updateEscortUi();
+  updateTotal();
+}
+
+function openQuote(id, roomChoice){
+  const p = findPkg(id); if(!p) return;
+  recordRecentPkg(id);
+  state.quotePkg = p; state.qty = 1; state.durationType = 'day'; state.escortOn = false;
+  state.roomChoice = roomChoice || (p.roomChoices && p.roomChoices.length ? p.roomChoices[0] : null);
+  const staffDefault = localStorage.getItem('staff_name') || '';
+  const g = GROUPS[p.group], z = currentCompany().zones[p.zone];
+  const isDaycare = !!(state.roomChoice && state.roomChoice.daycare);
+  const effDay = p.priceDay + (state.roomChoice ? (state.roomChoice.deltaDay||0) : 0);
+  const effMonth = p.priceMonth + (state.roomChoice ? (state.roomChoice.deltaMonth||0) : 0);
+  state.effDay = effDay; state.effMonth = effMonth;
+
+  const roomSelectHtml = (p.roomChoices && p.roomChoices.length)
+    ? '<div class="field"><label>เลือกห้องพักจริง</label><div class="room-select-row" id="roomSelectRow">' + p.roomChoices.map(r => roomChipHtml(r, state.roomChoice && r.id===state.roomChoice.id)).join('') + '</div></div>'
+    : '';
+
+  $('#quoteSheet').innerHTML =
+    '<div class="modal-head">' +
+      '<div><div class="htxt">สร้างใบเสนอราคา</div><div class="hsub" id="quoteHsub">' + p.room + (state.roomChoice ? ' · ' + state.roomChoice.name : '') + ' · ' + z.name + ' · ' + g.name + '</div></div>' +
+      '<button class="icon-btn" id="closeQuote">✕</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
+      roomSelectHtml +
+      '<div class="field"><label>ชื่อลูกค้า / ผู้สูงอายุ</label><input type="text" id="qCustomerName" placeholder="เช่น คุณยายสมศรี"></div>' +
+      '<div class="field"><label>เบอร์โทร หรือ LINE ID ลูกค้า</label><input type="text" id="qCustomerContact" placeholder="สำหรับแลกไลน์ / ติดต่อกลับ"></div>' +
+      '<div class="field"><label>เจ้าหน้าที่ผู้เสนอ</label><input type="text" id="qStaffName" value="' + staffDefault.replace(/"/g,'&quot;') + '" placeholder="ชื่อเจ้าหน้าที่"></div>' +
+      '<div class="field"><label>รูปแบบราคา</label><div class="radio-chip-row" id="durationChipsWrap">' + buildDurationChipsHtml(effDay, effMonth, isDaycare, 'day') + '</div></div>' +
+      '<div class="field"><label id="qtyLabel">จำนวนวัน</label><div class="stepper">' +
+        '<button id="qtyMinus" type="button">−</button><div class="val" id="qtyVal">1</div><button id="qtyPlus" type="button">+</button>' +
+      '</div></div>' +
+      (p.escort ?
+        '<div class="field"><div class="toggle-row" id="escortRow"><div><div class="ttxt">เจ้าหน้าที่ดูแลประกบตลอด 24 ชม.</div><div class="tsub">+฿39,000 / เดือน (เฉพาะแบบรายเดือน)</div></div><div class="switch" id="escortSwitch"></div></div></div>'
+        : '') +
+      '<div class="field"><label>หมายเหตุเพิ่มเติม</label><textarea id="qNotes" placeholder="เงื่อนไขพิเศษ หรือรายละเอียดที่คุยกับลูกค้า"></textarea></div>' +
+      '<div class="total-box"><div class="tl">ยอดรวมค่าบริการโดยประมาณ</div><div class="tv" id="qTotal">฿0</div></div>' +
+      '<div class="btn-row">' +
+        '<button class="btn btn-secondary" id="quoteCancel">ยกเลิก</button>' +
+        '<button class="btn btn-primary" id="quoteSubmit">สร้าง PDF และส่งไลน์</button>' +
+      '</div>' +
+    '</div>';
+
+  $('#quoteBackdrop').classList.add('show');
+  $('#closeQuote').addEventListener('click', closeQuote);
+  $('#quoteCancel').addEventListener('click', closeQuote);
+
+  const body = $('#quoteSheet');
+  // event delegation: room chips + duration chips (both regenerate over time, so bind once on the container)
+  body.addEventListener('click', (e) => {
+    const roomChip = e.target.closest('.room-select-chip');
+    if(roomChip){
+      const room = state.quotePkg.roomChoices.find(r => r.id === roomChip.dataset.rid);
+      if(room){ state.roomChoice = room; refreshRoomDependentUI(); }
+      return;
+    }
+    const durChip = e.target.closest('[data-duration]');
+    if(durChip){
+      state.durationType = durChip.dataset.duration;
+      if(state.durationType !== 'month') state.escortOn = false;
+      refreshRoomDependentUI();
+      return;
+    }
+  });
+
+  $('#qtyMinus').addEventListener('click', () => { state.qty = Math.max(1, state.qty-1); $('#qtyVal').textContent = state.qty; updateTotal(); });
+  $('#qtyPlus').addEventListener('click', () => { state.qty = Math.min(state.durationType==='month'?24:60, state.qty+1); $('#qtyVal').textContent = state.qty; updateTotal(); });
+
+  body.addEventListener('click', (e) => {
+    if(!e.target.closest('#escortSwitch')) return;
+    if(state.durationType !== 'month'){ toast('เพิ่มเจ้าหน้าที่ประกบได้เฉพาะแบบรายเดือนครับ'); return; }
+    state.escortOn = !state.escortOn;
+    updateEscortUi();
+    updateTotal();
+  });
+
+  $('#quoteSubmit').addEventListener('click', submitQuote);
+  updateEscortUi();
+  updateTotal();
+}
+function updateEscortUi(){
+  const sw = $('#escortSwitch'); if(!sw) return;
+  sw.classList.toggle('on', state.escortOn);
+  const row = $('#escortRow');
+  if(row) row.classList.toggle('disabled', state.durationType !== 'month');
+}
+function computeTotal(){
+  const p = state.quotePkg; if(!p) return 0;
+  const day = state.effDay != null ? state.effDay : p.priceDay;
+  const month = state.effMonth != null ? state.effMonth : p.priceMonth;
+  let base;
+  if(state.durationType === 'day') base = day * state.qty;
+  else if(state.durationType === 'daycare12') base = Math.round(day/2) * state.qty;
+  else base = month * state.qty;
+  const escort = (state.escortOn && state.durationType === 'month') ? 39000 * state.qty : 0;
+  return base + escort;
+}
+function updateTotal(){
+  const t = $('#qTotal'); if(t) t.textContent = '฿' + fmt(computeTotal());
+}
+function closeQuote(){ $('#quoteBackdrop').classList.remove('show'); state.quotePkg = null; state.roomChoice = null; state.effDay = null; state.effMonth = null; }
+$('#quoteBackdrop').addEventListener('click', (e) => { if(e.target.id==='quoteBackdrop') closeQuote(); });
+
+/* ============================================================
+   SUBMIT: BUILD PDF + SHARE + LOG
+   ============================================================ */
+async function submitQuote(){
+  const p = state.quotePkg; if(!p) return;
+  const customerName = $('#qCustomerName').value.trim();
+  const customerContact = $('#qCustomerContact').value.trim();
+  const staff = $('#qStaffName').value.trim();
+  const notes = $('#qNotes').value.trim();
+  if(!customerName){ toast('กรุณากรอกชื่อลูกค้าก่อนครับ','err'); return; }
+
+  if(staff) localStorage.setItem('staff_name', staff);
+
+  const g = GROUPS[p.group], z = currentCompany().zones[p.zone];
+  const total = computeTotal();
+  const effDay = state.effDay != null ? state.effDay : p.priceDay;
+  const effMonth = state.effMonth != null ? state.effMonth : p.priceMonth;
+  const durationLabel = state.durationType === 'day' ? 'รายวัน' : (state.durationType === 'daycare12' ? 'Day Care 12 ชม.' : 'รายเดือน');
+  const record = {
+    staff: staff || '-',
+    customerName, customerContact,
+    group: g.name, zone: z.name, roomType: p.room,
+    roomChoice: state.roomChoice ? state.roomChoice.name : '',
+    priceDay: effDay, priceMonth: effMonth,
+    durationType: durationLabel,
+    durationValue: state.qty,
+    total, escort: state.escortOn && state.durationType==='month',
+    notes
+  };
+
+  const submitBtn = $('#quoteSubmit');
+  submitBtn.disabled = true; submitBtn.textContent = 'กำลังสร้าง PDF...';
+
+  try{
+    const blob = await buildPdfBlob(record, p);
+    const filename = 'ใบเสนอราคา-' + customerName.replace(/\\s+/g,'') + '.pdf';
+    const textSummary = 'ใบเสนอราคา Tranquila Elderly Care\\nลูกค้า: ' + customerName + '\\nแพ็กเกจ: ' + p.room + ' (' + g.name + ')\\nยอดรวม: ฿' + fmt(total);
+    await shareOrDownload(blob, filename, textSummary);
+    saveLocalLogEntry(record);
+    syncLocalLog();
+    closeQuote();
+    toast('สร้างใบเสนอราคาเรียบร้อย ✔','ok');
+  }catch(err){
+    console.error(err);
+    toast('เกิดข้อผิดพลาดในการสร้าง PDF','err');
+  }finally{
+    submitBtn.disabled = false; submitBtn.textContent = 'สร้าง PDF และส่งไลน์';
+  }
+}
+
+function buildPdfHtml(record, p){
+  const cc = currentCompany();
+  const svc = SERVICES[p.svc];
+  const excl = EXCLUDED.slice();
+  const half = Math.ceil(excl.length/2);
+  const exclLeft = excl.slice(0, half), exclRight = excl.slice(half);
+  if(record.escort) exclRight.push(ESCORT_NOTE);
+  const dateStr = new Date().toLocaleDateString('th-TH', { year:'numeric', month:'long', day:'numeric' });
+  const durationLine = record.durationType + ' × ' + record.durationValue + (record.escort ? ' · รวมเจ้าหน้าที่ประกบ 24 ชม.' : '');
+
+  return (
+    '<div class="pdf-head">' +
+      '<div class="pdf-brand"><img src="' + cc.logo + '" alt="' + esc(cc.name) + '"><div><div class="pdf-logo">' + esc(cc.name) + '</div><div class="pdf-sub">' + esc(cc.fullName) + ' · ' + esc(cc.tagline) + '</div></div></div>' +
+      '<div><div class="pdf-doctitle">ใบเสนอราคาค่าบริการ</div><div class="pdf-date">' + dateStr + '</div></div>' +
+    '</div>' +
+    '<table>' +
+      '<tr><td class="lbl">ลูกค้า</td><td>' + esc(record.customerName) + '</td></tr>' +
+      '<tr><td class="lbl">ติดต่อ</td><td>' + esc(record.customerContact || '-') + '</td></tr>' +
+      '<tr><td class="lbl">เจ้าหน้าที่ผู้เสนอ</td><td>' + esc(record.staff) + '</td></tr>' +
+      '<tr><td class="lbl">กลุ่มผู้รับบริการ</td><td>' + esc(record.group) + '</td></tr>' +
+      '<tr><td class="lbl">โซน / ห้องพัก</td><td>' + esc(record.zone) + ' · ' + esc(record.roomType) + (record.roomChoice ? ' · ' + esc(record.roomChoice) : '') + '</td></tr>' +
+      '<tr><td class="lbl">อัตราค่าบริการ</td><td>฿' + fmt(record.priceDay) + ' / วัน (หรือ ฿' + fmt(record.priceMonth) + ' / เดือน)</td></tr>' +
+      '<tr><td class="lbl">รูปแบบที่เลือก</td><td>' + esc(durationLine) + '</td></tr>' +
+      (record.notes ? '<tr><td class="lbl">หมายเหตุ</td><td>' + esc(record.notes) + '</td></tr>' : '') +
+    '</table>' +
+    '<div class="pdf-total"><div class="tl">ยอดรวมค่าบริการโดยประมาณ</div><div class="tv">฿' + fmt(record.total) + '</div></div>' +
+    pdfPhotoStrip(p.room) +
+    '<div class="pdf-section-title">บริการที่ได้รับ</div>' +
+    '<div class="pdf-cols"><ul>' + svc.left.map(t=>'<li>'+esc(t)+'</li>').join('') + '</ul><ul>' + svc.right.map(t=>'<li>'+esc(t)+'</li>').join('') + '</ul></div>' +
+    '<div class="pdf-section-title">ค่าใช้จ่ายอื่น ๆ ที่ไม่รวมในค่าบริการ (ญาติสามารถนำมาเองได้)</div>' +
+    '<div class="pdf-cols"><ul>' + exclLeft.map(t=>'<li>'+esc(t)+'</li>').join('') + '</ul><ul>' + exclRight.map(t=>'<li>'+esc(t)+'</li>').join('') + '</ul></div>' +
+    '<div class="pdf-footer">' + NOTES.map(esc).join(' · ') + '<br>ใบเสนอราคานี้เป็นการประมาณการเบื้องต้น ราคาอาจเปลี่ยนแปลงตามการประเมินอาการจริงหน้างาน · จัดทำโดย Tranquila Elderly Care</div>'
+  );
+}
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function pdfPhotoStrip(roomName){
+  const photos = ROOM_IMAGES[roomName];
+  if(!photos || !photos.length) return '';
+  const pick = [photos[0], photos[1] || photos[0]];
+  return '<div class="pdf-section-title">ภาพห้องพัก</div><div class="pdf-photos">' +
+    pick.map(ph => '<div class="pf"><img src="' + ph.src + '"><div class="pc">' + esc(ph.caption) + '</div></div>').join('') +
+    '</div>';
+}
+
+async function buildPdfBlob(record, p){
+  const tpl = $('#pdfTemplate');
+  tpl.innerHTML = buildPdfHtml(record, p);
+  if(document.fonts && document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
+  await new Promise(r => setTimeout(r, 60));
+  const canvas = await html2canvas(tpl, { scale:2, backgroundColor:'#ffffff', useCORS:true });
+  const imgData = canvas.toDataURL('image/png');
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF('p','pt','a4');
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  const imgH = canvas.height * pageWidth / canvas.width;
+  let heightLeft = imgH, position = 0;
+  pdf.addImage(imgData, 'PNG', 0, position, pageWidth, imgH);
+  heightLeft -= pageHeight;
+  while(heightLeft > 0){
+    position = heightLeft - imgH;
+    pdf.addPage();
+    pdf.addImage(imgData, 'PNG', 0, position, pageWidth, imgH);
+    heightLeft -= pageHeight;
+  }
+  return pdf.output('blob');
+}
+
+async function shareOrDownload(blob, filename, textSummary){
+  try{
+    const file = new File([blob], filename, { type:'application/pdf' });
+    if(navigator.canShare && navigator.canShare({ files:[file] })){
+      await navigator.share({ files:[file], title:'ใบเสนอราคา Tranquila Elderly Care', text: textSummary });
+      return;
+    }
+  }catch(err){
+    if(err && err.name === 'AbortError') return;
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  toast('ดาวน์โหลด PDF แล้ว เปิด LINE เพื่อแนบไฟล์ส่งลูกค้าได้เลย','ok');
+}
+
+/* ============================================================
+   GOOGLE SHEET: LOG + HISTORY (with offline-safe local queue)
+   ============================================================ */
+function saveLocalLogEntry(record){
+  record = Object.assign({}, record);
+  record._localId = 'L' + Date.now() + Math.random().toString(36).slice(2,7);
+  record._synced = false;
+  record.timestamp = new Date().toISOString();
+  const key = localLogKey(state.company);
+  let log = [];
+  try{ log = JSON.parse(localStorage.getItem(key) || '[]'); }catch(e){}
+  log.unshift(record);
+  if(log.length > 300) log = log.slice(0, 300);
+  localStorage.setItem(key, JSON.stringify(log));
+  return record;
+}
+async function syncLocalLog(companyKey){
+  companyKey = companyKey || state.company;
+  const url = localStorage.getItem(sheetUrlKey(companyKey));
+  if(!url) return;
+  const key = localLogKey(companyKey);
+  let log = [];
+  try{ log = JSON.parse(localStorage.getItem(key) || '[]'); }catch(e){}
+  let changed = false;
+  for(const entry of log){
+    if(entry._synced) continue;
+    try{
+      await fetch(url, { method:'POST', mode:'no-cors', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify(entry) });
+      entry._synced = true; changed = true;
+    }catch(err){ /* still offline — leave unsynced, will retry next time */ }
+  }
+  if(changed) localStorage.setItem(key, JSON.stringify(log));
+}
+
+async function loadHistory(){
+  const companyKey = state.company;
+  const cc = currentCompany();
+  const histTitle = $('#histTitle'); if(histTitle) histTitle.textContent = 'ประวัติการเสนอราคา · ' + cc.name;
+  const url = localStorage.getItem(sheetUrlKey(companyKey));
+  const listEl = $('#histList'), emptyEl = $('#histEmpty');
+  listEl.innerHTML = '<div class="empty-state">กำลังโหลดข้อมูล...</div>';
+  emptyEl.style.display = 'none';
+
+  await syncLocalLog(companyKey);
+
+  let remote = null;
+  if(url){
+    try{
+      const res = await fetch(url);
+      const data = await res.json();
+      if(Array.isArray(data)){ remote = data; localStorage.setItem(historyCacheKey(companyKey), JSON.stringify(data)); }
+    }catch(err){ remote = null; }
+  }
+  let cache = [];
+  try{ cache = JSON.parse(localStorage.getItem(historyCacheKey(companyKey)) || '[]'); }catch(e){}
+  const base = remote !== null ? remote : cache;
+
+  let localLog = [];
+  try{ localLog = JSON.parse(localStorage.getItem(localLogKey(companyKey)) || '[]'); }catch(e){}
+  const pending = localLog.filter(e => !e._synced);
+
+  state.history = pending.concat(base);
+  state.historyOffline = !url || remote === null;
+  state.historyHasCache = base.length > 0;
+
+  if(!url && !pending.length){
+    listEl.innerHTML = '';
+    emptyEl.style.display = 'block';
+    emptyEl.innerHTML = '<div class="em-title">ยังไม่ได้เชื่อมต่อ Google Sheet</div><div>ไปที่แท็บ "ตั้งค่า" เพื่อเชื่อมต่อก่อนครับ</div>';
+    return;
+  }
+  renderHistory();
+}
+
+function renderHistory(){
+  const q = ($('#histSearch').value || '').trim().toLowerCase();
+  const listEl = $('#histList'), emptyEl = $('#histEmpty');
+  const filtered = state.history.filter(r => {
+    if(!q) return true;
+    return [r.customerName, r.staff, r.roomType, r.group].join(' ').toLowerCase().includes(q);
+  });
+  const banner = state.historyOffline && state.historyHasCache
+    ? '<div class="hist-offline-banner">📶 ออฟไลน์ — แสดงข้อมูลที่บันทึกไว้ล่าสุดในเครื่อง อาจไม่ใช่ข้อมูลล่าสุดจากทุกเครื่อง</div>'
+    : '';
+  if(!filtered.length){
+    listEl.innerHTML = banner;
+    emptyEl.style.display = 'block';
+    emptyEl.innerHTML = '<div class="em-title">ไม่พบรายการ</div><div>ลองค้นหาด้วยคำอื่น</div>';
+    return;
+  }
+  emptyEl.style.display = 'none';
+  listEl.innerHTML = banner + filtered.map((r, i) => {
+    let d = '-';
+    try{ d = new Date(r.timestamp).toLocaleString('th-TH', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }); }catch(e){}
+    const pendingTag = r._synced === false ? '<span class="pending-tag">รอซิงค์</span>' : '';
+    return '<div class="hist-row" data-idx="' + state.history.indexOf(r) + '">' +
+      '<div class="hist-left"><div class="hist-name">' + esc(r.customerName || 'ไม่ระบุชื่อ') + pendingTag + '</div><div class="hist-meta">' + esc(r.roomType) + (r.roomChoice ? ' · ' + esc(r.roomChoice) : '') + ' · ' + esc(r.zone) + ' · ' + esc(r.staff) + '</div></div>' +
+      '<div class="hist-right"><div class="hist-total">฿' + fmt(r.total || 0) + '</div><div class="hist-date">' + d + '</div></div>' +
+    '</div>';
+  }).join('');
+  listEl.querySelectorAll('.hist-row').forEach(row => row.addEventListener('click', () => openHistDetail(state.history[row.dataset.idx])));
+}
+$('#histSearch').addEventListener('input', renderHistory);
+
+function openHistDetail(r){
+  if(!r) return;
+  let d = '-';
+  try{ d = new Date(r.timestamp).toLocaleString('th-TH', { dateStyle:'long', timeStyle:'short' }); }catch(e){}
+  $('#histSheet').innerHTML =
+    '<div class="modal-head"><div><div class="htxt">' + esc(r.customerName || 'ไม่ระบุชื่อ') + '</div><div class="hsub">' + d + '</div></div><button class="icon-btn" id="closeHist">✕</button></div>' +
+    '<div class="modal-body">' +
+      '<table style="width:100%;border-collapse:collapse;font-size:13.5px;">' +
+        histRow('เจ้าหน้าที่', r.staff) + histRow('ติดต่อลูกค้า', r.customerContact || '-') +
+        histRow('กลุ่มผู้รับบริการ', r.group) + histRow('โซน / ห้องพัก', (r.zone||'') + ' · ' + (r.roomType||'') + (r.roomChoice ? ' · ' + r.roomChoice : '')) +
+        histRow('อัตรา', '฿' + fmt(r.priceDay) + '/วัน · ฿' + fmt(r.priceMonth) + '/เดือน') +
+        histRow('รูปแบบที่เลือก', (r.durationType||'') + ' × ' + (r.durationValue||'') + (r.escort==='มี' || r.escort===true ? ' · มีเจ้าหน้าที่ประกบ 24ชม.' : '')) +
+        histRow('หมายเหตุ', r.notes || '-') +
+      '</table>' +
+      '<div class="total-box"><div class="tl">ยอดรวม</div><div class="tv">฿' + fmt(r.total||0) + '</div></div>' +
+      '<div class="btn-row"><button class="btn btn-secondary" id="closeHist2">ปิด</button></div>' +
+    '</div>';
+  $('#histBackdrop').classList.add('show');
+  $('#closeHist').addEventListener('click', () => $('#histBackdrop').classList.remove('show'));
+  $('#closeHist2').addEventListener('click', () => $('#histBackdrop').classList.remove('show'));
+}
+function histRow(label, val){ return '<tr><td style="padding:7px 4px;border-bottom:1px solid var(--line);color:var(--ink-soft);width:38%;">' + label + '</td><td style="padding:7px 4px;border-bottom:1px solid var(--line);">' + esc(val) + '</td></tr>'; }
+$('#histBackdrop').addEventListener('click', (e) => { if(e.target.id==='histBackdrop') $('#histBackdrop').classList.remove('show'); });
+
+/* ============================================================
+   SETTINGS (both companies shown together)
+   ============================================================ */
+function renderSheetSettingsCards(){
+  const container = $('#sheetSettingsContainer');
+  container.innerHTML = Object.values(COMPANIES).map(c =>
+    '<div class="settings-card">' +
+      '<h3>' + esc(c.name) + ' — Google Sheet Web App URL <span id="connStatus-' + c.key + '" class="status-pill bad" style="margin-left:8px;"><span class="sdot"></span>ยังไม่เชื่อมต่อ</span></h3>' +
+      '<p>ทุกครั้งที่สร้างใบเสนอราคาให้ ' + esc(c.name) + ' ระบบจะบันทึกรายการลง Google Sheet นี้อัตโนมัติ</p>' +
+      '<div class="field"><input type="text" id="sheetUrlInput-' + c.key + '" placeholder="https://script.google.com/macros/s/xxxxx/exec"></div>' +
+      '<div class="btn-row">' +
+        '<button class="btn btn-secondary" data-testconn="' + c.key + '">ทดสอบการเชื่อมต่อ</button>' +
+        '<button class="btn btn-primary" data-saveurl="' + c.key + '">บันทึก URL</button>' +
+      '</div>' +
+    '</div>'
+  ).join('');
+
+  container.querySelectorAll('[data-saveurl]').forEach(btn => btn.addEventListener('click', () => {
+    const ck = btn.dataset.saveurl;
+    const v = $('#sheetUrlInput-' + ck).value.trim();
+    if(v) localStorage.setItem(sheetUrlKey(ck), v); else localStorage.removeItem(sheetUrlKey(ck));
+    refreshConnStatus(ck);
+    toast(v ? 'บันทึก URL แล้ว' : 'ลบ URL แล้ว','ok');
+  }));
+  container.querySelectorAll('[data-testconn]').forEach(btn => btn.addEventListener('click', async () => {
+    const ck = btn.dataset.testconn;
+    const v = $('#sheetUrlInput-' + ck).value.trim();
+    if(!v){ toast('กรุณาใส่ URL ก่อนครับ','err'); return; }
+    try{
+      const res = await fetch(v);
+      await res.json();
+      toast(COMPANIES[ck].name + ': เชื่อมต่อสำเร็จ ✔','ok');
+    }catch(err){
+      toast(COMPANIES[ck].name + ': เชื่อมต่อไม่สำเร็จ ตรวจสอบ URL และการ Deploy อีกครั้ง','err');
+    }
+  }));
+}
+function loadSettings(){
+  $('#staffNameInput').value = localStorage.getItem('staff_name') || '';
+  renderSheetSettingsCards();
+  Object.keys(COMPANIES).forEach(ck => {
+    const input = $('#sheetUrlInput-' + ck);
+    if(input) input.value = localStorage.getItem(sheetUrlKey(ck)) || '';
+    refreshConnStatus(ck);
+  });
+}
+function refreshConnStatus(companyKey){
+  const has = !!localStorage.getItem(sheetUrlKey(companyKey));
+  const pill = $('#connStatus-' + companyKey);
+  if(!pill) return;
+  pill.className = 'status-pill ' + (has ? 'ok' : 'bad');
+  pill.innerHTML = '<span class="sdot"></span>' + (has ? 'เชื่อมต่อแล้ว' : 'ยังไม่เชื่อมต่อ');
+}
+$('#saveStaffBtn').addEventListener('click', () => {
+  localStorage.setItem('staff_name', $('#staffNameInput').value.trim());
+  toast('บันทึกชื่อเจ้าหน้าที่แล้ว','ok');
+});
+
+/* ============================================================
+   LANDING (choose company) / BRAND / HERO
+   ============================================================ */
+function renderLandingCards(){
+  const grid = $('#landingGrid');
+  const lastUsed = localStorage.getItem('active_company');
+  grid.innerHTML = Object.values(COMPANIES).map(c => {
+    const isPhoto = c.heroType === 'photo';
+    const cardClass = isPhoto ? 'landing-card card-photo' : 'landing-card card-brand';
+    const bgStyle = isPhoto ? ' style="background-image:url(\'' + c.heroSrc + '\')"' : '';
+    const recentTag = lastUsed === c.key ? '<div class="landing-card-recent">ใช้ล่าสุด</div>' : '';
+    return '<div class="' + cardClass + '" data-company="' + c.key + '"' + bgStyle + '>' +
+      recentTag +
+      '<div class="landing-card-content">' +
+        '<img class="landing-card-logo" src="' + c.logo + '" alt="' + esc(c.name) + '">' +
+        '<div class="landing-card-name">' + esc(c.name) + '</div>' +
+        '<div class="landing-card-full">' + esc(c.fullName) + '</div>' +
+        '<div class="landing-card-tagline">' + esc(c.tagline) + '</div>' +
+        '<div class="landing-card-cta">ดูแคตตาล็อก <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  grid.querySelectorAll('.landing-card').forEach(card => card.addEventListener('click', () => enterCompany(card.dataset.company)));
+}
+function showLanding(){
+  $all('.view').forEach(v => v.classList.remove('active'));
+  $('#view-landing').classList.add('active');
+  $('#topbar').classList.add('topbar-hidden');
+  $('.bottom-nav').style.display = 'none';
+  renderLandingCards();
+}
+function renderBrand(){
+  const cc = currentCompany();
+  $('#brandLogo').src = cc.logo;
+  $('#brandName').textContent = cc.name;
+  $('#brandSub').textContent = cc.fullName.toUpperCase() + ' · แคตตาล็อกบริการ';
+}
+function renderHero(){
+  const cc = currentCompany();
+  const hero = $('#heroBanner');
+  if(cc.heroType === 'photo'){
+    hero.className = 'hero-banner';
+    hero.style.backgroundImage = "url('" + cc.heroSrc + "')";
+    hero.innerHTML =
+      '<div class="hero-banner-content">' +
+        '<div>' +
+          '<div class="hero-eyebrow">Chiang Mai Nursing Home Care</div>' +
+          '<div class="hero-title">' + esc(cc.name) + '</div>' +
+          '<div class="hero-sub">' + esc(cc.tagline) + ' — บ้านพักผู้สูงอายุบรรยากาศร่มรื่น ดูแลใกล้ชิดตลอด 24 ชั่วโมง</div>' +
+        '</div>' +
+        '<div class="hero-badges">' +
+          (cc.hasZones ? Object.entries(cc.zones).map(([k,z]) => '<span class="hero-badge"><span class="hb-dot" style="background:' + (k==='villa'?'var(--teal)':'var(--purple)') + '"></span>' + esc(z.name) + '</span>').join('') : '<span class="hero-badge"><span class="hb-dot" style="background:var(--cmnh-blue)"></span>' + esc(cc.fullName) + '</span>') +
+        '</div>' +
+      '</div>';
+  } else {
+    hero.className = 'hero-banner hero-brand';
+    hero.style.backgroundImage = '';
+    hero.innerHTML =
+      '<div class="hero-banner-content">' +
+        '<img class="hero-brand-logo" src="' + cc.logo + '" alt="' + esc(cc.name) + '">' +
+        '<div>' +
+          '<div class="hero-eyebrow">Chiang Mai Nursing Home Care</div>' +
+          '<div class="hero-title">' + esc(cc.name) + '</div>' +
+          '<div class="hero-sub">' + esc(cc.fullName) + ' · ' + esc(cc.tagline) + '</div>' +
+        '</div>' +
+      '</div>';
+  }
+}
+function enterCompany(key){
+  if(!COMPANIES[key]) return;
+  state.company = key;
+  localStorage.setItem('active_company', key);
+  state.groupFilter = 'all'; state.zoneFilter = 'all';
+  renderBrand();
+  renderHero();
+  renderChips();
+  renderGrid();
+  renderRecent();
+  $('#topbar').classList.remove('topbar-hidden');
+  $('.bottom-nav').style.display = '';
+  switchView('catalog');
+}
+$('#switchCompanyLink').addEventListener('click', showLanding);
+
+/* ============================================================
+   INIT
+   ============================================================ */
+renderBrand();
+renderHero();
+renderChips();
+renderGrid();
+renderRecent();
+loadSettings();
+syncLocalLog();
+showLanding();
+</script>
+</body>
+</html>
