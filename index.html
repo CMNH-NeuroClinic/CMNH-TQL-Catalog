@@ -215,8 +215,11 @@
   .room-pick-card .rp-tag-price{color:var(--purple-deep); background:var(--purple-soft); margin-left:4px;}
   .room-pick-card .rp-noimg{width:100%; height:110px; background:linear-gradient(120deg, var(--teal-soft), var(--purple-soft)); display:flex; align-items:center; justify-content:center; font-family:'Taviraj'; font-weight:600; font-size:16px; color:var(--purple-deep);}
   .mini-thumb-row{display:flex; gap:8px; overflow-x:auto; margin:8px 0 4px;}
+  .mini-thumb-item{display:flex; flex-direction:column; align-items:center; gap:3px; flex-shrink:0; width:70px;}
   .mini-thumb-row img{width:64px; height:64px; object-fit:cover; border-radius:10px; flex-shrink:0;}
   .mini-thumb-row .thumb-fallback{width:64px; height:64px; border-radius:10px; flex-shrink:0; background:linear-gradient(120deg, var(--teal-soft), var(--purple-soft)); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--purple-deep); text-align:center; padding:2px;}
+  .mini-thumb-name{font-size:10px; font-weight:700; color:var(--ink-soft); text-align:center; line-height:1.2;}
+  .mini-thumb-addon{font-size:9px; font-weight:700; color:var(--purple-deep); background:var(--purple-soft); padding:1px 6px; border-radius:6px;}
 
   .pkg-card .ribbon{
     position:absolute; top:14px; right:-34px; width:150px; text-align:center;
@@ -748,8 +751,8 @@ const PRIVATE_VILLA_ROOM_CHOICES = [
 const PRIVATE_ROOM_ROOM_CHOICES = [
   { id:'vip7',  name:'VIP 7',  nameEN:'VIP 7',  deltaDay:0,    deltaMonth:0,    images:[] },
   { id:'vip8',  name:'VIP 8',  nameEN:'VIP 8',  deltaDay:0,    deltaMonth:0,    images:[] },
-  { id:'vip9',  name:'VIP 9',  nameEN:'VIP 9',  deltaDay:300,  deltaMonth:5000, images:[] },
-  { id:'vip10', name:'VIP 10', nameEN:'VIP 10', deltaDay:300,  deltaMonth:5000, images:[] }
+  { id:'vip9',  name:'VIP 9',  nameEN:'VIP 9',  deltaDay:100,  deltaMonth:5000, images:[] },
+  { id:'vip10', name:'VIP 10', nameEN:'VIP 10', deltaDay:100,  deltaMonth:5000, images:[] }
 ];
 
 const VILLA_ROOM_CHOICES = [
@@ -774,14 +777,14 @@ const PACKAGES = [
   { id:'v-rehab',      zone:'villa',    group:'rehab',   room:'บ้าน Villa โซนรวม', roomEN:'Villa House – Shared Zone', priceDay:1200, priceMonth:35000, escort:false, svc:'standard', roomChoices:VILLA_ROOM_CHOICES },
   { id:'v-ngfeed',     zone:'villa',    group:'ngfeed',  room:'บ้าน Villa โซนรวม', roomEN:'Villa House – Shared Zone', priceDay:1500, priceMonth:42000, escort:false, svc:'critical', roomChoices:VILLA_ROOM_CHOICES },
   { id:'v-ngtube',     zone:'villa',    group:'ngtube',  room:'บ้าน Villa โซนรวม', roomEN:'Villa House – Shared Zone', priceDay:1700, priceMonth:45000, escort:false, svc:'critical', roomChoices:VILLA_ROOM_CHOICES },
+  { id:'p-general-pr', zone:'private',  group:'general', room:'Private Room',      roomEN:'Private Room', priceDay:1600, priceMonth:45000, escort:true,  svc:'standard', roomChoices:PRIVATE_ROOM_ROOM_CHOICES },
+  { id:'p-rehab-pr',   zone:'private',  group:'rehab',   room:'Private Room',      roomEN:'Private Room', priceDay:1600, priceMonth:45000, escort:true,  svc:'standard', roomChoices:PRIVATE_ROOM_ROOM_CHOICES },
+  { id:'p-ngfeed-pr',  zone:'private',  group:'ngfeed',  room:'Private Room',      roomEN:'Private Room', priceDay:1900, priceMonth:53000, escort:true,  svc:'critical', roomChoices:PRIVATE_ROOM_ROOM_CHOICES },
+  { id:'p-ngtube-pr',  zone:'private',  group:'ngtube',  room:'Private Room',      roomEN:'Private Room', priceDay:2200, priceMonth:58000, escort:true,  svc:'critical', roomChoices:PRIVATE_ROOM_ROOM_CHOICES },
   { id:'v-general-pv', zone:'villa',    group:'general', room:'Private Villa',     roomEN:'Private Villa', priceDay:1800, priceMonth:52000, escort:true,  svc:'standard', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
   { id:'v-rehab-pv',   zone:'villa',    group:'rehab',   room:'Private Villa',     roomEN:'Private Villa', priceDay:1800, priceMonth:52000, escort:true,  svc:'standard', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
   { id:'v-ngfeed-pv',  zone:'villa',    group:'ngfeed',  room:'Private Villa',     roomEN:'Private Villa', priceDay:2200, priceMonth:62000, escort:true,  svc:'critical', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
-  { id:'v-ngtube-pv',  zone:'villa',    group:'ngtube',  room:'Private Villa',     roomEN:'Private Villa', priceDay:2500, priceMonth:67000, escort:true,  svc:'critical', roomChoices:PRIVATE_VILLA_ROOM_CHOICES },
-  { id:'p-general-pr', zone:'private',  group:'general', room:'Private Room',      roomEN:'Private Room', priceDay:1600, priceMonth:45000, escort:true,  svc:'standard', roomChoices:PRIVATE_ROOM_ROOM_CHOICES },
-  { id:'p-rehab-pr',   zone:'private',  group:'rehab',   room:'Private Room',      roomEN:'Private Room', priceDay:1600, priceMonth:45000, escort:true,  svc:'standard', roomChoices:PRIVATE_ROOM_ROOM_CHOICES },
-  { id:'p-ngfeed-pv',  zone:'private',  group:'ngfeed',  room:'Private Villa',     roomEN:'Private Villa', priceDay:1900, priceMonth:53000, escort:true,  svc:'critical' },
-  { id:'p-ngtube-pr',  zone:'private',  group:'ngtube',  room:'Private Room',      roomEN:'Private Room', priceDay:2200, priceMonth:58000, escort:true,  svc:'critical', roomChoices:PRIVATE_ROOM_ROOM_CHOICES }
+  { id:'v-ngtube-pv',  zone:'villa',    group:'ngtube',  room:'Private Villa',     roomEN:'Private Villa', priceDay:2500, priceMonth:67000, escort:true,  svc:'critical', roomChoices:PRIVATE_VILLA_ROOM_CHOICES }
 ];
 
 /* ============================================================
@@ -1043,10 +1046,15 @@ function openDetail(id){
   const exclLeft = excl.slice(0, half), exclRight = excl.slice(half);
   if(p.escort) exclRight.push(ESCORT_NOTE);
   const roomPreview = (p.roomChoices && p.roomChoices.length)
-    ? '<div class="svc-block-title">ห้องพักจริงให้เลือก (' + p.roomChoices.length + ' ห้อง)</div><div class="mini-thumb-row">' + p.roomChoices.map(r => r.images && r.images.length
-        ? '<img src="' + r.images[0] + '" alt="' + esc(r.name) + '" title="' + esc(r.name) + '">'
-        : '<div class="thumb-fallback" title="' + esc(r.name) + '">' + esc(r.name) + '</div>'
-      ).join('') + '</div>'
+    ? '<div class="svc-block-title">ห้องพักจริงให้เลือก (' + p.roomChoices.length + ' ห้อง)</div><div class="mini-thumb-row">' + p.roomChoices.map(r => {
+        const hasImg = r.images && r.images.length;
+        const thumb = hasImg
+          ? '<img src="' + r.images[0] + '" alt="' + esc(r.name) + '" title="' + esc(r.name) + '">'
+          : '<div class="thumb-fallback" title="' + esc(r.name) + '">' + esc(r.name) + '</div>';
+        const nameLabel = hasImg ? '<span class="mini-thumb-name">' + esc(r.name) + '</span>' : '';
+        const addon = (r.deltaDay || r.deltaMonth) ? '<span class="mini-thumb-addon">+฿' + fmt(r.deltaDay||0) + '/วัน</span>' : '';
+        return '<div class="mini-thumb-item">' + thumb + nameLabel + addon + '</div>';
+      }).join('') + '</div>'
     : '';
 
   $('#detailSheet').innerHTML =
