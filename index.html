@@ -685,7 +685,7 @@ const SERVICES = {
     rightEN:['Laundry service (ozone-sanitized wash)','Aroma oil massage every Wednesday','Warm foot soak every Saturday','Herbal compress every Sunday','Nail/hair/shave grooming every Sunday','Alms-giving on Buddhist holy days','Special activities on annual holidays']
   },
   critical:{
-    left:['แพทย์เฉพาะทางลงตรวจทุก 2 สัปดาห์','พยาบาลวิชาชีพประจำศูนย์','เจ้าหน้าที่ดูแลตลอด 24 ชม. (เปลี่ยนเวรทุก 8 ชม.)','อาหารเหลวปั่นสดโดยนักโภชนาการ = 5 มื้อ/วัน','กายภาพบำบัด, นวดกระตุ้นใบหน้า, นวดกระเพาะปัสสาวะ','กิจกรรมบำบัด เน้นฝึกกล้ามเนื้อมัดเล็กและการทรงตัว','ขึ้นเครื่องปรับองศาเพื่อฝึกยืน, Space Walker ฯลฯ'],
+    left:['แพทย์เฉพาะทางลงตรวจทุก 2 สัปดาห์','พยาบาลวิชาชีพประจำศูนย์','เจ้าหน้าที่ดูแลตลอด 24 ชม. (เปลี่ยนเวรทุก 12 ชม.)','อาหารเหลวปั่นสดโดยนักโภชนาการ = 5 มื้อ/วัน','กายภาพบำบัด, นวดกระตุ้นใบหน้า, นวดกระเพาะปัสสาวะ','กิจกรรมบำบัด เน้นฝึกกล้ามเนื้อมัดเล็กและการทรงตัว','ขึ้นเครื่องปรับองศาเพื่อฝึกยืน, Space Walker ฯลฯ'],
     right:['การฝึกเดินขึ้นทางลาด, การขึ้น-ลงบันได','ทำความสะอาดชุด (ส่งซักอบโอโซนฆ่าเชื้อ)','นวดน้ำมันอโรม่า ทุกวันพุธ','แช่เท้าน้ำอุ่น ทุกวันเสาร์','ประคบสมุนไพร ทุกวันอาทิตย์','ตัดเล็บ/ตัดผม/โกนหนวด ทุกวันอาทิตย์','ใส่บาตรทุกวันพระ / กิจกรรมพิเศษประจำปี'],
     leftEN:['Specialist doctor visits every 2 weeks','Full-time professional nurse on site','24-hour caregiver on duty (8-hour shift rotation)','Freshly blended liquid meals by a nutritionist = 5 meals/day','Physiotherapy, facial stimulation massage, bladder massage','Activity therapy focused on fine motor skills and balance','Tilt-table standing training, Space Walker, etc.'],
     rightEN:['Ramp walking and stair up/down training','Laundry service (ozone-sanitized wash)','Aroma oil massage every Wednesday','Warm foot soak every Saturday','Herbal compress every Sunday','Nail/hair/shave grooming every Sunday','Alms-giving / special activities on annual holidays']
@@ -841,7 +841,7 @@ const CMNH_ZONES = {
 const CMNH_ROOM_CHOICES = [
   { id:'zone',           name:'ห้องรวม (โซนรวม)',     nameEN:'Shared Room',        deltaDay:0,   deltaMonth:0,    images:[] },
   { id:'special-double', name:'ห้องพิเศษ (คู่)',       nameEN:'Special Room (Twin)', deltaDay:200, deltaMonth:2500, images:[] },
-  { id:'special-single', name:'ห้องพิเศษ (เดี่ยว)',    nameEN:'Special Room (Single)', deltaDay:200, deltaMonth:5000, images:[] }
+  { id:'special-single', name:'ห้องพิเศษ (เดี่ยว)',    nameEN:'Special Room (Single)', deltaDay:200, deltaMonth:4000, images:[] }
 ];
 const CMNH_PACKAGES = [
   { id:'c-general', zone:'main', group:'general', room:'บ้านพักผู้สูงอายุทั่วไป (สาขา 4)', roomEN:'General Elderly Home (Branch 4)', priceDay:1000, priceMonth:25000, escort:false, svc:'standard', roomChoices:CMNH_ROOM_CHOICES },
